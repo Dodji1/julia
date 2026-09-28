@@ -37,11 +37,11 @@ python -m pytest -q             # 16 tests
 
 ## Corpus
 
-1. Décompresser `ressources pédagogique pour vitalia` dans `data/raw/` (non versionné).
+1. Décompresser `ressources pédagogique pour julia` dans `data/raw/` (non versionné).
 2. Le manifeste `data/metadata/corpus_manifest.yaml` décrit les 48 fichiers : domaine, niveau de source,
    type, version, présence d'une couche texte, doublons. Il se régénère avec :
    ```bash
-   python scripts/build_manifest.py "data/raw/ressources pédagogique pour vitalia"
+   python scripts/build_manifest.py "data/raw/ressources pédagogique pour julia"
    ```
 3. **À faire : relire les niveaux de source** (`level_confirmed: false` partout). Ce sont des propositions heuristiques.
 
@@ -93,5 +93,5 @@ docker/    Dockerfile.api · initdb/01-extensions.sql
 
 ## Avertissement
 
-Vitalia est un outil d'aide à la recherche. Il ne remplace pas le conseil d'un professionnel du droit ou de la fiscalité.
-Vérifier les droits de réutilisation des textes (notamment Droit-Afrique.com et le Journal officiel OHADA) avant toute diffusion publique.
+julia est un outil d'aide à la recherche. Il ne remplace pas le conseil d'un professionnel du droit ou de la fiscalité.
+Vérifier les droits de réutilisation des textes (notamment le Journal officiel OHADA) avant toute diffusion publique.
