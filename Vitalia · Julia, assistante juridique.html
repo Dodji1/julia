@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vitalia · Julia, assistante juridique sourcée</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F8FC;--card:#fff;--soft:#EDF2FA;--text:#0B1F3A;--muted:#52627d;--line:#D9E2F0;--acc:#1F55E0;--acc-t:#fff;
+--navy:#07111F;--navy2:#0B1F3A;--navy-line:#1B3358;--navy-text:#E8EEF8;--navy-muted:#9DB0CC;--eacc:#3D78FF;
+--sans:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;--serif:'Newsreader',Georgia,'Times New Roman',serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#07111F;--card:#0B1F3A;--soft:#0D2444;--text:#E8EEF8;--muted:#9DB0CC;--line:#1B3358;--acc:#3D78FF}}
+:root[data-theme="dark"]{--bg:#07111F;--card:#0B1F3A;--soft:#0D2444;--text:#E8EEF8;--muted:#9DB0CC;--line:#1B3358;--acc:#3D78FF}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--sans)}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--eacc);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:12px 20px;font-weight:600;text-decoration:none;transition:background .15s,border-color .15s}
+.btn-p{background:var(--eacc);color:#fff}.btn-p:hover{background:#5a8dff}
+.btn-s{border-color:var(--navy-line);color:var(--navy-text);background:transparent}.btn-s:hover{border-color:var(--navy-muted)}
+#view-chat{display:none}
+body.chat #view-site{display:none}body.chat #view-chat{display:flex}
+
+/* Site */
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--navy);border-bottom:1px solid var(--navy-line)}
+nav.top .wrap{display:flex;align-items:center;gap:28px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;color:var(--navy-text);text-decoration:none;letter-spacing:-.01em}
+.logo i{width:26px;height:26px;border-radius:7px;background:var(--eacc);display:grid;place-items:center;font-style:normal;font-size:14px;color:#fff}
+nav.top .links{display:flex;gap:22px;margin-left:auto}
+nav.top .links a{color:var(--navy-muted);text-decoration:none;font-size:15px}nav.top .links a:hover{color:var(--navy-text)}
+nav.top .btn{padding:8px 16px;font-size:14px}
+.tt{background:none;border:1px solid var(--navy-line);border-radius:8px;width:36px;height:36px;color:var(--navy-muted)}
+.hero{background:var(--navy);color:var(--navy-text);padding:88px 0 96px}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+h1{font:400 clamp(38px,5.2vw,60px)/1.08 var(--serif);letter-spacing:-.02em;margin:0 0 22px}
+.hero p.sub{font-size:19px;color:var(--navy-muted);max-width:34em;margin:0 0 34px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.spec{background:var(--navy2);border:1px solid var(--navy-line);border-radius:18px;padding:22px;font-size:14px}
+.spec h2{margin:0 0 16px;font:600 13px var(--sans);color:var(--navy-muted)}
+.spec dl{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;margin:0 0 18px}
+.spec dt{color:var(--navy-muted)}.spec dd{margin:0;color:var(--navy-text)}
+.spec dd b{font-weight:600}
+.ex{border-left:3px solid var(--eacc);padding:4px 0 4px 14px;margin:0 0 18px;display:grid;gap:8px}
+.ex span{height:9px;border-radius:5px;background:var(--navy-line)}
+.spec .cap{font-size:12.5px;color:var(--navy-muted);margin:0 0 16px}
+.spec .btn{padding:8px 14px;font-size:13.5px;border-radius:8px;background:transparent;border-color:var(--navy-line);color:var(--navy-text)}
+section.blk{padding:88px 0}
+h2.t{font:500 clamp(28px,3.4vw,38px)/1.15 var(--serif);letter-spacing:-.015em;margin:0 0 12px}
+p.lead{color:var(--muted);max-width:40em;margin:0 0 44px;font-size:17px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ben{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px}
+.ben h3{margin:0 0 8px;font-size:18px}.ben p{margin:0;color:var(--muted)}
+.doms{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.dom{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;text-align:left;transition:border-color .15s}
+.dom:hover{border-color:var(--acc)}
+.dom strong{display:block;font-size:17px;margin-bottom:4px}
+.dom small{color:var(--muted);font-size:13.5px}
+.dom.on{grid-column:span 2;background:var(--navy2);border-color:var(--eacc);color:var(--navy-text)}
+.dom.on small{color:var(--navy-muted)}
+.tag{display:inline-block;margin-top:12px;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.dom.on .tag{background:var(--eacc);color:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+.step{padding:30px;border-right:1px solid var(--line)}.step:last-child{border:0}
+.step b{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;margin-bottom:16px}
+.step h3{margin:0 0 6px;font-size:18px}.step p{margin:0;color:var(--muted)}
+.trust{background:var(--navy);color:var(--navy-text);padding:96px 0}
+.trust q{display:block;quotes:none;font:400 clamp(28px,4vw,44px)/1.2 var(--serif);max-width:20em;margin-bottom:40px}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;color:var(--navy-muted)}
+.rules div{border-top:1px solid var(--navy-line);padding-top:16px}.rules b{display:block;color:var(--navy-text);margin-bottom:4px}
+footer{padding:36px 0;color:var(--muted);font-size:14px}
+
+/* Chat */
+#view-chat{height:100vh;height:100dvh;background:var(--bg)}
+aside.sb{width:280px;flex:none;background:var(--navy);color:var(--navy-text);display:flex;flex-direction:column;padding:14px;gap:10px;border-right:1px solid var(--navy-line)}
+.sb .logo{padding:6px 6px 10px}
+.sb button.nc{background:var(--eacc);color:#fff;border:0;border-radius:10px;padding:10px;font-weight:600;text-align:left}
+.sb input{width:100%;background:var(--navy2);border:1px solid var(--navy-line);border-radius:10px;padding:9px 12px;color:var(--navy-text);font:inherit;font-size:14px}
+.sb h4{margin:10px 6px 2px;font-size:12.5px;font-weight:600;color:var(--navy-muted)}
+.hist{flex:1;overflow:auto;display:grid;gap:2px;align-content:start}
+.hist button,.sb .mn{background:none;border:0;text-align:left;padding:8px 10px;border-radius:8px;color:var(--navy-text);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist button:hover,.hist button.cur,.sb .mn:hover{background:var(--navy2)}
+.hist .empty{color:var(--navy-muted);font-size:13.5px;padding:8px 10px}
+.prof{display:flex;gap:10px;align-items:center;padding:10px 6px 2px;border-top:1px solid var(--navy-line);font-size:14px}
+.prof i{width:30px;height:30px;border-radius:50%;background:var(--navy2);display:grid;place-items:center;font-style:normal;font-weight:600;border:1px solid var(--navy-line)}
+main.ch{flex:1;display:flex;flex-direction:column;min-width:0}
+.ch header{padding:14px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.ch header .mb{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:36px;height:36px}
+.ch header h1{font:600 17px var(--sans);letter-spacing:0;margin:0}
+.ch header p{margin:0;color:var(--muted);font-size:13.5px}
+.ch header .home{margin-left:auto;background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:14px;color:var(--muted)}
+.feed{flex:1;overflow:auto;padding:28px 24px}
+.feed>div{max-width:760px;margin:0 auto;display:grid;gap:22px}
+.empty-s h2{font:500 30px/1.2 var(--serif);margin:40px 0 8px}
+.empty-s p{color:var(--muted);margin:0 0 22px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font-size:14px}
+.chip.sel{border-color:var(--acc);background:var(--acc);color:#fff}
+.mu{justify-self:end;max-width:85%;background:var(--acc);color:#fff;border-radius:16px 16px 4px 16px;padding:12px 16px;white-space:pre-wrap}
+.mj{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.mj .who{font-weight:700;font-size:14px;margin-bottom:6px}
+.mj .note{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--muted);margin-bottom:10px}
+.mj p{margin:0 0 10px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.acts button{background:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:13.5px;color:var(--muted)}
+.acts button:hover,.acts button.on{border-color:var(--acc);color:var(--text)}
+.compose{padding:0 24px 20px}
+.box{max-width:760px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.box:focus-within{border-color:var(--acc)}
+.box textarea{width:100%;border:0;background:none;resize:none;outline:0;color:var(--text);font:inherit;min-height:52px;max-height:180px}
+.bar{display:flex;align-items:center;gap:8px}
+.bar .att{background:none;border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:13.5px;color:var(--muted)}
+.bar select{background:var(--soft);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:4px 8px;font:inherit;font-size:13.5px}
+.bar .send{margin-left:auto;background:var(--acc);color:#fff;border:0;border-radius:10px;padding:8px 18px;font-weight:600}
+.bar .send:disabled{opacity:.45;cursor:default}
+.disc{max-width:760px;margin:8px auto 0;text-align:center;font-size:12.5px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:var(--navy-text);border:1px solid var(--navy-line);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+
+@media (max-width:900px){
+ .hero .wrap{grid-template-columns:1fr}.g3,.steps,.rules{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid var(--line)}
+ .doms{grid-template-columns:repeat(2,1fr)}.dom.on{grid-column:span 2}nav.top .links{display:none}nav.top .tt{margin-left:auto}
+ aside.sb{position:fixed;inset:0 auto 0 0;z-index:9;transform:translateX(-100%);transition:transform .2s;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+ aside.sb.open{transform:none}.ch header .mb{display:block}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div id="view-site">
+<nav class="top"><div class="wrap">
+ <a class="logo" href="#top"><i>V</i>Vitalia</a>
+ <div class="links"><a href="#pourquoi">Plateforme</a><a href="#domaines">Domaines</a><a href="#fonctionnement">Fonctionnement</a><a href="#confiance">Confiance</a></div>
+ <button class="tt" data-theme-toggle aria-label="Changer de thème">◐</button>
+ <button class="btn btn-p" data-go-chat>Poser une question</button>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+ <div>
+  <h1>L'intelligence juridique au service du droit africain.</h1>
+  <p class="sub">Recherchez, comprenez et vérifiez les textes OHADA, UEMOA et les réglementations nationales avec une IA juridique sourcée.</p>
+  <div class="cta"><button class="btn btn-p" data-go-chat>Poser une question</button><a class="btn btn-s" href="#pourquoi">Découvrir la plateforme</a></div>
+ </div>
+ <aside class="spec" aria-label="Anatomie d'une source">
+  <h2>Chaque réponse de Julia s'appuie sur une source vérifiable</h2>
+  <dl><dt>Texte</dt><dd><b>Nom du texte officiel</b></dd><dt>Article</dt><dd><b>Article n°</b></dd><dt>Version</dt><dd>Version en vigueur, date</dd><dt>Page</dt><dd>Page du document source</dd></dl>
+  <div class="ex" aria-hidden="true"><span style="width:96%"></span><span style="width:88%"></span><span style="width:52%"></span></div>
+  <p class="cap">L'extrait est copié depuis le texte officiel, jamais reformulé par l'IA.</p>
+  <span class="btn" role="img" aria-label="Bouton Voir le texte">Voir le texte</span>
+ </aside>
+</div></header>
+
+<section class="blk" id="pourquoi"><div class="wrap">
+ <h2 class="t">Pourquoi cette plateforme ?</h2>
+ <p class="lead">Vitalia recherche dans les sources juridiques africaines et vous explique les textes avec leurs références.</p>
+ <div class="g3">
+  <div class="ben"><h3>Recherche juridique accélérée</h3><p>Une première réponse documentée en quelques secondes, au lieu de parcourir des centaines de pages de PDF.</p></div>
+  <div class="ben"><h3>Réponses sourcées</h3><p>Texte, article, version et page : vous vérifiez chaque affirmation à la source.</p></div>
+  <div class="ben"><h3>Transmission des connaissances</h3><p>Les juniors comprennent la règle, le texte qui la fonde, le raisonnement et les exceptions.</p></div>
+ </div>
+</div></section>
+
+<section class="blk" id="domaines" style="background:var(--soft)"><div class="wrap">
+ <h2 class="t">Domaines couverts</h2>
+ <p class="lead">Nous ouvrons les domaines un par un, à mesure que les textes sont vérifiés.</p>
+ <div class="doms">
+  <button class="dom on" data-go-chat data-domain="Fiscalité"><strong>Fiscalité</strong><small>Code général des impôts du Bénin, notes et procédures de la DGI.</small><span class="tag">Premier domaine ouvert</span></button>
+  <button class="dom" data-go-chat data-domain="Social"><strong>Droit social</strong><small>Code du travail et textes sociaux.</small><span class="tag">Prochainement</span></button>
+  <button class="dom" data-go-chat data-domain="Comptabilité"><strong>Comptabilité</strong><small>SYSCOHADA et plans de comptes.</small><span class="tag">Prochainement</span></button>
+  <button class="dom" data-go-chat data-domain="ONG et association"><strong>ONG et association</strong><small>Système comptable des entités à but non lucratif.</small><span class="tag">Prochainement</span></button>
+  <button class="dom" data-go-chat data-domain="OHADA"><strong>OHADA</strong><small>Actes uniformes.</small><span class="tag">Prochainement</span></button>
+  <button class="dom" data-go-chat data-domain="Droit des affaires"><strong>Droit des affaires</strong><small>Sociétés, commerce.</small><span class="tag">Prochainement</span></button>
+  <button class="dom" data-go-chat data-domain="UEMOA"><strong>UEMOA</strong><small>Textes communautaires.</small><span class="tag">Prochainement</span></button>
+  <button class="dom" data-go-chat data-domain="Droit béninois"><strong>Droit béninois</strong><small>Textes nationaux.</small><span class="tag">Progressivement</span></button>
+ </div>
+</div></section>
+
+<section class="blk" id="fonctionnement"><div class="wrap">
+ <h2 class="t">Comment ça fonctionne ?</h2>
+ <p class="lead">Trois étapes, de la question à la vérification.</p>
+ <div class="steps">
+  <div class="step"><b>1</b><h3>Posez votre question</h3><p>En français, avec vos mots. Julia vous demande une précision si la réponse en dépend.</p></div>
+  <div class="step"><b>2</b><h3>L'IA recherche dans les textes</h3><p>Recherche par sens et par référence exacte, en privilégiant les textes officiels en vigueur.</p></div>
+  <div class="step"><b>3</b><h3>Obtenez une réponse avec ses sources</h3><p>Règle, analyse, points d'attention, et extraits à ouvrir dans le document d'origine.</p></div>
+ </div>
+</div></section>
+
+<section class="trust" id="confiance"><div class="wrap">
+ <q>Des réponses fondées sur les textes, pas sur des suppositions.</q>
+ <div class="rules">
+  <div><b>Pas de source, pas d'affirmation</b>Sans texte pertinent dans la base, Julia le dit au lieu d'inventer.</div>
+  <div><b>Règle et interprétation séparées</b>Vous voyez ce que dit le texte et ce qui relève de l'analyse.</div>
+  <div><b>Extraits copiés, jamais reformulés</b>Les citations viennent du texte officiel stocké dans la base.</div>
+ </div>
+</div></section>
+<footer><div class="wrap">Vitalia est un outil d'aide à la recherche. Il ne remplace pas le conseil d'un professionnel du droit ou de la fiscalité.</div></footer>
+</div>
+
+<div id="view-chat">
+ <aside class="sb" id="sb">
+  <a class="logo" href="#" data-go-site><i>V</i>Vitalia</a>
+  <button class="nc" id="newChat">+ Nouveau chat</button>
+  <input id="hsearch" type="search" placeholder="Rechercher dans les conversations" aria-label="Rechercher dans les conversations">
+  <h4>Historique</h4>
+  <div class="hist" id="hist"></div>
+  <button class="mn" data-toast="Favoris : disponible avec les comptes utilisateurs (phase 3).">★ Favoris</button>
+  <button class="mn" data-toast="Paramètres : disponible avec les comptes utilisateurs (phase 3).">⚙ Paramètres</button>
+  <div class="prof"><i>B</i><span>Profil utilisateur</span></div>
+ </aside>
+ <main class="ch">
+  <header>
+   <button class="mb" id="menuBtn" aria-label="Ouvrir le menu">☰</button>
+   <div><h1>Assistant juridique</h1><p>Julia · Fiscalité du Bénin en premier · OHADA · UEMOA</p></div>
+   <button class="home" data-go-site>Retour au site</button>
+  </header>
+  <div class="feed" id="feed"><div id="msgs"></div></div>
+  <div class="compose">
+   <div class="box">
+    <textarea id="q" rows="2" placeholder="Posez votre question juridique..." aria-label="Votre question"></textarea>
+    <div class="bar">
+     <button class="att" data-toast="Import de documents : prévu en phase 3 (documents utilisateurs).">📎 Joindre un document</button>
+     <select id="dom" aria-label="Domaine"><option>Tous les domaines</option><option>Fiscalité</option><option>Social</option><option>Comptabilité</option><option>ONG et association</option><option>OHADA</option><option>UEMOA</option><option>Droit des affaires</option><option>Droit béninois</option></select>
+     <button class="send" id="send" disabled>Envoyer</button>
+    </div>
+   </div>
+   <p class="disc">Prototype d'interface : le moteur de recherche n'est pas encore connecté. Aucune réponse juridique n'est simulée.</p>
+  </div>
+ </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let convs=[],cur=null;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2600)}
+function show(chat){document.body.classList.toggle('chat',chat);window.scrollTo(0,0);if(chat)$('#q').focus()}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function render(){
+ const m=$('#msgs'),c=convs.find(x=>x.id===cur);
+ if(!c||!c.msgs.length){
+  m.innerHTML='<div class="empty-s"><h2>Que souhaitez-vous vérifier ?</h2><p>Posez une question précise. Julia répond à partir des textes, avec leurs références.</p><div class="chips">'+
+  ['Fiscalité','Social','Comptabilité','ONG et association'].map(d=>`<button class="chip${$('#dom').value===d?' sel':''}" data-chip="${d}">${d}</button>`).join('')+'</div></div>';
+ }else{
+  m.innerHTML=c.msgs.map((x,i)=>x.u?`<div class="mu">${esc(x.u)}</div>`:
+  `<div class="mj"><div class="who">Julia</div><span class="note">Moteur de recherche non connecté</span>
+  <p>Cette interface est un prototype. Le pipeline de recherche dans les textes sera branché aux étapes 5 à 9 : jusque-là, Julia ne fournit aucune réponse juridique, faute de source à citer.</p>
+  <div class="acts"><button data-copy="${i}">Copier</button><button data-fb="up">👍 Utile</button><button data-fb="down">👎 À améliorer</button><button data-fb="err">Signaler une erreur juridique</button></div></div>`).join('');
+ }
+ $('#hist').innerHTML=convs.length?convs.filter(x=>x.title.toLowerCase().includes($('#hsearch').value.toLowerCase())).map(x=>`<button data-conv="${x.id}" class="${x.id===cur?'cur':''}">${esc(x.title)}</button>`).join(''):'<div class="empty">Aucune conversation</div>';
+ $('#feed').scrollTop=1e6;
+}
+function send(){
+ const t=$('#q').value.trim();if(t.length<3)return;
+ let c=convs.find(x=>x.id===cur);
+ if(!c){c={id:Date.now(),title:t.slice(0,40),msgs:[]};convs.unshift(c);cur=c.id}
+ const d=$('#dom').value;c.msgs.push({u:t+(d!=='Tous les domaines'?`\n[${d}]`:'')},{j:1});
+ $('#q').value='';$('#send').disabled=true;render();
+}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-go-chat],[data-go-site],[data-chip],[data-conv],[data-toast],[data-copy],[data-fb],[data-theme-toggle]');if(!t)return;
+ if(t.hasAttribute('data-go-chat')){if(t.dataset.domain)$('#dom').value=t.dataset.domain;show(true);render()}
+ else if(t.hasAttribute('data-go-site')){e.preventDefault();show(false)}
+ else if(t.dataset.chip){$('#dom').value=t.dataset.chip;render();$('#q').focus()}
+ else if(t.dataset.conv){cur=+t.dataset.conv;render();$('#sb').classList.remove('open')}
+ else if(t.dataset.toast)toast(t.dataset.toast);
+ else if(t.dataset.copy!==undefined){navigator.clipboard&&navigator.clipboard.writeText(t.closest('.mj').querySelector('p').textContent).then(()=>toast('Réponse copiée'),()=>toast('Copie impossible'))}
+ else if(t.dataset.fb){t.classList.toggle('on');toast('Merci, votre retour sera enregistré quand le backend sera connecté.')}
+ else if(t.hasAttribute('data-theme-toggle')){const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark';store.set('vt',r.dataset.theme)}
+});
+$('#newChat').onclick=()=>{cur=null;render();$('#q').focus();$('#sb').classList.remove('open')};
+$('#menuBtn').onclick=()=>$('#sb').classList.toggle('open');
+$('#send').onclick=send;
+$('#q').addEventListener('input',e=>{$('#send').disabled=e.target.value.trim().length<3});
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+$('#dom').onchange=render;$('#hsearch').oninput=render;
+const sv=store.get('vt');if(sv)document.documentElement.dataset.theme=sv;
+if(location.hash==='#chat'){show(true)}render();
+</script>
+</body>
+</html>
