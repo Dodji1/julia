@@ -1,0 +1,23 @@
+# Web / API
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+pydantic-settings>=2.3
+httpx>=0.27
+
+# Base de données
+sqlalchemy>=2.0
+psycopg[binary]>=3.2
+pgvector>=0.3
+
+# Ingestion
+pymupdf>=1.24
+pytesseract>=0.3.10
+pillow>=10.0
+pyyaml>=6.0
+
+# Embeddings locaux (BGE-M3) — installation lourde (PyTorch)
+sentence-transformers>=3.0
+
+# Tests
+pytest>=8.0

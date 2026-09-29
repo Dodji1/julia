@@ -1,0 +1,826 @@
+# Manifeste du corpus Vitalia — niveaux et types à valider (level_confirmed: false)
+source_root: ressources pédagogique pour vitalia
+entries:
+- id: apiex-guide-pratique-creation-d-entreprise-d94338cdaa
+  path: Comptabilité/APIEX_Guide_pratique_Creation_d_entreprise_d94338cdaa.pdf
+  title: APIEX_Guide_pratique_Creation_d_entreprise_d94338cdaa
+  domain: comptable
+  country: BJ
+  organization: ''
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: e1477bf42c6e953dea6a8d45522807f35847aebfd41fd366596987f6708a01b3
+  duplicate_of: null
+  notes: ''
+- id: apiex-repertoire-licences-commerciales-be02ac7caa
+  path: Comptabilité/APIEX_Repertoire_Licences_commerciales_be02ac7caa.pdf
+  title: APIEX_Repertoire_Licences_commerciales_be02ac7caa
+  domain: comptable
+  country: BJ
+  organization: ''
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 81c0bd6175f1d7111e8341a788ed3c4b32706c53f4fb3400537562faee53a201
+  duplicate_of: null
+  notes: ''
+- id: audcg-2010-fr-droit-comptable-general
+  path: Comptabilité/AUDCG-2010_fr droit comptable général.pdf
+  title: AUDCG-2010_fr droit comptable général
+  domain: comptable
+  country: OHADA
+  organization: OHADA
+  document_type: acte_uniforme
+  source_level: 1
+  parser: ohada
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 8bd07815d6cdbdcc03f741483c082dc6250f48e166655e3125f3d8a5d06ea1df
+  duplicate_of: null
+  notes: Probable doublon de l'AU du 15/12/2010 sur le droit commercial général — vérifier.
+- id: auscgie-revise-ohada-fr-07
+  path: Comptabilité/AUSCGIE-REVISE-OHADA-fr 07.pdf
+  title: AUSCGIE-REVISE-OHADA-fr 07
+  domain: comptable
+  country: OHADA
+  organization: OHADA
+  document_type: acte_uniforme
+  source_level: 1
+  parser: ohada
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 17136ba692df25ed835136834c37529c7ea50f0430408575e3c557051569fb9a
+  duplicate_of: null
+  notes: Probable doublon de 'OHADA-Acte-uniforme-2014-droit-societes-commerciales-gie' — vérifier.
+- id: acte-uniforme-ohada-du-15-decembre-2010-portant-sur-le-droit-commercia
+  path: Comptabilité/Acte uniforme/Acte_uniforme_OHADA_du_15_decembre_2010_portant_sur_le_droit_commercial_general_451385d3c7.pdf
+  title: Acte_uniforme_OHADA_du_15_decembre_2010_portant_sur_le_droit_commercial_general_451385d3c7
+  domain: comptable
+  country: OHADA
+  organization: OHADA
+  document_type: acte_uniforme
+  source_level: 1
+  parser: ohada
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 42cb015ef4a6eacab75934b4c3280107a79304f7ccaecf1891f30d3c2047b8c4
+  duplicate_of: null
+  notes: ''
+- id: ohada-acte-uniforme-2014-droit-societes-commerciales-gie
+  path: Comptabilité/Acte uniforme/OHADA-Acte-uniforme-2014-droit-societes-commerciales-gie.pdf
+  title: OHADA-Acte-uniforme-2014-droit-societes-commerciales-gie
+  domain: comptable
+  country: OHADA
+  organization: OHADA
+  document_type: acte_uniforme
+  source_level: 1
+  parser: ohada
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: c93e931b059511d5ac7a58288e7be6501082ba7e97562f1bef1afbaff4787223
+  duplicate_of: null
+  notes: ''
+- id: ohada-acte-uniforme-2017-droit-comptable-information-financiere-v2
+  path: Comptabilité/Acte uniforme/OHADA-Acte-uniforme-2017-droit-comptable-information-financiere V2.pdf
+  title: OHADA-Acte-uniforme-2017-droit-comptable-information-financiere V2
+  domain: comptable
+  country: OHADA
+  organization: OHADA
+  document_type: acte_uniforme
+  source_level: 1
+  parser: ohada
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: fa2692176fe518ab7b16b9ecb8b1498a70c83d859c3cb3e62bec6a943c2b9975
+  duplicate_of: null
+  notes: ''
+- id: bareme-cotisations-ccib
+  path: Comptabilité/BAREME-COTISATIONS-CCIB.pdf
+  title: BAREME-COTISATIONS-CCIB
+  domain: comptable
+  country: BJ
+  organization: ''
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 44a09680d5bfd459b5dfbdb9b580e6cfa26804656e2e95a73dc0234efe8984ef
+  duplicate_of: null
+  notes: ''
+- id: guide-du-createur-d-entreprise-bdef
+  path: Comptabilité/Guide du créateur d'entreprise bdef.pdf
+  title: Guide du créateur d'entreprise bdef
+  domain: comptable
+  country: BJ
+  organization: ''
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: eab1236eae4daf190994a86d14efb0139fe83305dd7c23141743177842a93d30
+  duplicate_of: null
+  notes: ''
+- id: guide-d-application-du-syscohada
+  path: Comptabilité/Guide-d-application-du-SYSCOHADA.pdf
+  title: Guide-d-application-du-SYSCOHADA
+  domain: comptable
+  country: OHADA
+  organization: OHADA
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 25c24c8b00be0eb53d7bdd7dce53c18ef9d46adbe2dbf16619996c0a75d4df0b
+  duplicate_of: null
+  notes: ''
+- id: loi-promotion-et-dev-mpe
+  path: Comptabilité/Loi promotion et dev MPE.pdf
+  title: Loi promotion et dev MPE
+  domain: comptable
+  country: BJ
+  organization: République du Bénin
+  document_type: code_ou_loi
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: b6d626776dd466194dcccfad358e32083cee5a10477da527b4b964b288800bce
+  duplicate_of: null
+  notes: ''
+- id: plan-des-comptes-syscohada-revise
+  path: Comptabilité/Plan des comptes Syscohada Revisé.pdf
+  title: Plan des comptes Syscohada Revisé
+  domain: comptable
+  country: OHADA
+  organization: OHADA
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 6459341a7e54436fb6d34ecbd4bc0d0f357bfe2659f42159c9c271892a1c4328
+  duplicate_of: null
+  notes: ''
+- id: 2021-doctrine-fiscale-du-benin-version-finale
+  path: Fiscal/2021_DOCTRINE FISCALE DU BENIN_Version finale.pdf
+  title: 2021_DOCTRINE FISCALE DU BENIN_Version finale
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: doctrine_administrative
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: '2021'
+  status: a_verifier
+  has_text_layer: true
+  in_mvp: true
+  sha256: 95556bd5a62b1fe6f1aed254b55644dffdbb8a1e70fb46f334fc777696972426
+  duplicate_of: null
+  notes: 'Antérieur aux dernières lois de finances : à traiter avec réserve.'
+- id: 2018-acte-additionnel-cedeao-du-22-decembre-2018-portant-adoption-des-
+  path: Fiscal/ARRETE/2018-ACTE ADDITIONNEL CEDEAO DU 22 DÉCEMBRE 2018 PORTANT ADOPTION DES RÈGLES COMMUNAUTAIRES POUR L'ÉLIMINATION
+    DE LA DOUBLE IMPOSITION.pdf
+  title: 2018-ACTE ADDITIONNEL CEDEAO DU 22 DÉCEMBRE 2018 PORTANT ADOPTION DES RÈGLES COMMUNAUTAIRES POUR L'ÉLIMINATION DE
+    LA DOUBLE IMPOSITION
+  domain: fiscal
+  country: CEDEAO
+  organization: CEDEAO
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: aff5d4dd953438777036eaa49dd8c6dcb2cf7542cc1d5ddc1d59ca5a1bbbf9e5
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2019-note-de-service-instructions-relatives-a-la-procedure-de-prise-en
+  path: Fiscal/ARRETE/2019-NOTE DE SERVICE-INSTRUCTIONS RELATIVES A LA PROCEDURE DE PRISE EN CHARGE DES ENTREPRISES NOUVELLEMENT
+    CREEES A COTONOU.pdf
+  title: 2019-NOTE DE SERVICE-INSTRUCTIONS RELATIVES A LA PROCEDURE DE PRISE EN CHARGE DES ENTREPRISES NOUVELLEMENT CREEES
+    A COTONOU
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 468266394c814d31e930ec557f43aa06ce2801f375d1fee9ba82c5205c432e85
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2020-arrete-1283-c-portant-fixation-des-taux-d-amortissement-applicabl
+  path: Fiscal/ARRETE/2020-ARRETE 1283-C PORTANT FIXATION DES TAUX D'AMORTISSEMENT APPLICABLES EN MATIERE D'IMPOTS SUR LE
+    REVENU.pdf
+  title: 2020-ARRETE 1283-C PORTANT FIXATION DES TAUX D'AMORTISSEMENT APPLICABLES EN MATIERE D'IMPOTS SUR LE REVENU
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 7e805c0179bfb1d2f7e0a89a631a24f704695b21f89ed3296b0c21e22ce81044
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2020-arrete-modalites-et-normes-de-presentation-du-fichier-des-ecritur
+  path: Fiscal/ARRETE/2020-Arrêté Modalités et normes de présentation du fichier des écritures comptables (FEC).pdf
+  title: 2020-Arrêté Modalités et normes de présentation du fichier des écritures comptables (FEC)
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: f66a596971b2006452e4beb2ddb0e1ca032fd811cce837195de11fefdfb03063
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2020-arrete-declaration-pays-par-pays-article-1085-ter-2-ter-cgi
+  path: Fiscal/ARRETE/2020-Arrêté-déclaration pays par pays article 1085 ter 2 ter CGI.pdf
+  title: 2020-Arrêté-déclaration pays par pays article 1085 ter 2 ter CGI
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: b90370c356b513468a98b7b08d141880aeb54c3b3e5190bc0a78260969b281d6
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2020-circulaire-n-864-extension-mecef-professions-liberales
+  path: Fiscal/ARRETE/2020-CIRCULAIRE N° 864-EXTENSION MECeF-PROFESSIONS LIBERALES.pdf
+  title: 2020-CIRCULAIRE N° 864-EXTENSION MECeF-PROFESSIONS LIBERALES
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 19d7aa20ab2ac9c826f0f8fefe6301a470c4f548862de631a8e63e6572fa6140
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2020-circulaire-delai-de-validite-des-certificats-d-assujettissement-a
+  path: Fiscal/ARRETE/2020-Circulaire delai de validité des certificats d'assujettissement à la TVA.pdf
+  title: 2020-Circulaire delai de validité des certificats d'assujettissement à la TVA
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 908adf7c1d257511635d39989be4507acee4ae21691146abeed0703c818c77ef
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2020-note-regime-fiscal-groupement-d-entreprises
+  path: Fiscal/ARRETE/2020-NOTE-Régime fiscal Groupement d'entreprises.pdf
+  title: 2020-NOTE-Régime fiscal Groupement d'entreprises
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: d92732a991cafd8b00a7e0adae2fb8baeb1990632152eafc0c8ef9437186ae67
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2021-arrete-remboursement-des-frais-d-acquisition-mecef
+  path: Fiscal/ARRETE/2021-ARRETE REMBOURSEMENT DES FRAIS D'ACQUISITION MECeF.pdf
+  title: 2021-ARRETE REMBOURSEMENT DES FRAIS D'ACQUISITION MECeF
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 3e03fab600181b9de2514cf58213a069a1903ecd1c89212364d639d86ec47db7
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2021-circulaire-069-traitement-tva-prestataires-non-domicilies-au-beni
+  path: Fiscal/ARRETE/2021-CIRCULAIRE 069 TRAITEMENT TVA PRESTATAIRES NON DOMICILIES AU BENIN REGIME DEROGATOIRE.pdf
+  title: 2021-CIRCULAIRE 069 TRAITEMENT TVA PRESTATAIRES NON DOMICILIES AU BENIN REGIME DEROGATOIRE
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 79d5366abb19ce89a93642b08cb359a125979e79887a6a5e5dacbe207c64add4
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2021-modalites-d-application-mesures-prix-de-transfert-lf-2020
+  path: Fiscal/ARRETE/2021-Modalités d'application-mesures prix de transfert-LF 2020.pdf
+  title: 2021-Modalités d'application-mesures prix de transfert-LF 2020
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 3c1d6b67affcb89a14147f228b5338698f30e5bcd8c779493c49ba1642ff064a
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2023-regime-fiscal-des-projets
+  path: Fiscal/ARRETE/2023-RÉGIME FISCAL DES PROJETS.pdf
+  title: 2023-RÉGIME FISCAL DES PROJETS
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: bd5ada6fdeaf464b0e1a94d96d30be187852ca8133b6fa886c99d61c709d2982
+  duplicate_of: null
+  notes: ''
+- id: 2024-arrete-964-c-fixant-les-conditions-et-modalites-d-echange-d-infor
+  path: Fiscal/ARRETE/2024-ARRETE-964-C-FIXANT LES CONDITIONS ET MODALITES D'ECHANGE D'INFORMATIONS SOUS FORME D'ECRITS ELECTRONIQUES
+    ENTRE L'ADMINISTRATION.pdf
+  title: 2024-ARRETE-964-C-FIXANT LES CONDITIONS ET MODALITES D'ECHANGE D'INFORMATIONS SOUS FORME D'ECRITS ELECTRONIQUES ENTRE
+    L'ADMINISTRATION
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: arrete_ou_acte
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 774db2ad5af44ad99674f46a5f0d633ead5301d3707ccbf936ad74bbaaeb3a3e
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2024-note-d-orientation-du-controle-fiscal-pour-l-annee-2024
+  path: Fiscal/ARRETE/2024-NOTE D'ORIENTATION DU CONTRÔLE FISCAL POUR L'ANNÉE 2024.pdf
+  title: 2024-NOTE D'ORIENTATION DU CONTRÔLE FISCAL POUR L'ANNÉE 2024
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 81b33998fc7f8ef7bcfb7ca1bca5b4f3e3e0c04faf313006d865fb1d1b5def9c
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: 2025-benin-code-general-des-impots-2025
+  path: Fiscal/CODE/2025_Bénin-Code Général des Impôts 2025.pdf
+  title: 2025_Bénin-Code Général des Impôts 2025
+  domain: fiscal
+  country: BJ
+  organization: République du Bénin
+  document_type: code_ou_loi
+  source_level: 1
+  parser: cgi
+  level_confirmed: false
+  version_label: 2025 (LF 2024-34 du 12/12/2024)
+  status: archive
+  has_text_layer: true
+  in_mvp: true
+  sha256: c34a3539c25e4aab577508a2e7e95076360b2ebca6cc2403026d315805f4b0ba
+  duplicate_of: null
+  notes: ''
+- id: 615474a740b5d-benin-loi-mpme
+  path: Fiscal/CODE/615474a740b5d_Bénin - LOI MPME.pdf
+  title: 615474a740b5d_Bénin - LOI MPME
+  domain: fiscal
+  country: BJ
+  organization: République du Bénin
+  document_type: code_ou_loi
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: 8618b4ecb88bc3267ec0f746a97341a4da45ca7b80840fb6ea8cb1fc1596e6bf
+  duplicate_of: null
+  notes: ''
+- id: benin-code-des-investissements
+  path: Fiscal/CODE/Bénin - Code des Investissements.pdf
+  title: Bénin - Code des Investissements
+  domain: fiscal
+  country: BJ
+  organization: République du Bénin
+  document_type: code_ou_loi
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 0e36f11daf5d3b75b2f04fe863268c12c6bb6874e4bd6ea74695f7477263426d
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: benin-zones-economiques-speciales
+  path: Fiscal/CODE/Bénin - Zones économiques spéciales.pdf
+  title: Bénin - Zones économiques spéciales
+  domain: fiscal
+  country: BJ
+  organization: République du Bénin
+  document_type: code_ou_loi
+  source_level: 1
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 9df6707efeb6d4df7cc8489df754f877f5bea38384d07d2bcb5d0c05d93d93c5
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: benin-code-general-des-impots-2026
+  path: Fiscal/CODE/Bénin-Code Général des Impôts 2026.pdf
+  title: Bénin-Code Général des Impôts 2026
+  domain: fiscal
+  country: BJ
+  organization: République du Bénin
+  document_type: code_ou_loi
+  source_level: 1
+  parser: cgi
+  level_confirmed: false
+  version_label: 2026 (LF 2025-22 du 08/12/2025)
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: dcade7868686940c963411c53f60bbb015331c52b90741d785329def7dd7691a
+  duplicate_of: null
+  notes: ''
+- id: guide-des-normes-de-services-de-la-dgi-2026
+  path: Fiscal/GUIDE DES NORMES DE SERVICES DE LA DGI-2026.pdf
+  title: GUIDE DES NORMES DE SERVICES DE LA DGI-2026
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: f5445782813c83735d75ac3ec41f1b7d32e2aed245e2eeb7115f30c36bc6257d
+  duplicate_of: null
+  notes: ''
+- id: guide-fiscal-des-entreprises-benin
+  path: Fiscal/GUIDE FISCAL DES ENTREPRISES BÉNIN.pdf
+  title: GUIDE FISCAL DES ENTREPRISES BÉNIN
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 523d6a61abf011eecee49509e3c5891e64790590ac647806f78a75ae6905754b
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: guide-sur-le-contentieux-fiscal-et-les-recours-gracieux-2024
+  path: Fiscal/GUIDE SUR LE CONTENTIEUX FISCAL ET LES RECOURS GRACIEUX-2024.pdf
+  title: GUIDE SUR LE CONTENTIEUX FISCAL ET LES RECOURS GRACIEUX-2024
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: d851830a0ecc76ec81c33ca13502e39ab6441e2768b7804236077887b01ca601
+  duplicate_of: null
+  notes: ''
+- id: mesure-fiscale-entreprise
+  path: Fiscal/Mesure fiscale entreprise.pdf
+  title: Mesure fiscale entreprise
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: e45651f75b029c7435653e973e2ab4848d77d5d36952bf9172db89b651cc1563
+  duplicate_of: null
+  notes: ''
+- id: note-circulaire-1260-derogations-a-l-obligation-de-delivrance-des-fact
+  path: Fiscal/NOTE CIRCULAIRE 1260-DEROGATIONS A L'OBLIGATION DE DELIVRANCE DES FACTURES NORMALISEES.pdf
+  title: NOTE CIRCULAIRE 1260-DEROGATIONS A L'OBLIGATION DE DELIVRANCE DES FACTURES NORMALISEES
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 260981c86ba7dbf2e6534088dda348d58cb996d6d2306a6b52c54b1280825856
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: extension-obligation-facture-normalisee-toutes-personnes-tps
+  path: Fiscal/PROCEDURE/EXTENSION OBLIGATION FACTURE NORMALISEE TOUTES PERSONNES TPS.pdf
+  title: EXTENSION OBLIGATION FACTURE NORMALISEE TOUTES PERSONNES TPS
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: procedure_dgi
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: cd6ddd8a0e867c524f66bbe7b51b5cd09e100e81ddf4cbc548b4550916d9100a
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: note-circulaire-1260-derogations-a-l-obligation-de-delivrance-des-fact-260981
+  path: Fiscal/PROCEDURE/NOTE CIRCULAIRE 1260-DEROGATIONS A L'OBLIGATION DE DELIVRANCE DES FACTURES NORMALISEES.pdf
+  title: NOTE CIRCULAIRE 1260-DEROGATIONS A L'OBLIGATION DE DELIVRANCE DES FACTURES NORMALISEES
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 260981c86ba7dbf2e6534088dda348d58cb996d6d2306a6b52c54b1280825856
+  duplicate_of: note-circulaire-1260-derogations-a-l-obligation-de-delivrance-des-fact
+  notes: 'Scan : OCR requis.'
+- id: note-circulaire-1403-imposition-des-remunerations-exceptionnnelles
+  path: Fiscal/PROCEDURE/NOTE CIRCULAIRE-1403-IMPOSITION DES REMUNERATIONS EXCEPTIONNNELLES.pdf
+  title: NOTE CIRCULAIRE-1403-IMPOSITION DES REMUNERATIONS EXCEPTIONNNELLES
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 90ba5bd4826cbb684451c2d7227a5c6682d98425009224f9c099af4493bab438
+  duplicate_of: null
+  notes: 'Scan : OCR requis.'
+- id: note-d-orientation-du-controle-fiscal-pour-l-annee-2024
+  path: Fiscal/PROCEDURE/NOTE D'ORIENTATION DU CONTRÔLE FISCAL POUR L'ANNÉE 2024.pdf
+  title: NOTE D'ORIENTATION DU CONTRÔLE FISCAL POUR L'ANNÉE 2024
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: note_circulaire
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
+  sha256: 81b33998fc7f8ef7bcfb7ca1bca5b4f3e3e0c04faf313006d865fb1d1b5def9c
+  duplicate_of: 2024-note-d-orientation-du-controle-fiscal-pour-l-annee-2024
+  notes: 'Scan : OCR requis.'
+- id: presentation-du-portail-e-services
+  path: Fiscal/PROCEDURE/PRÉSENTATION DU PORTAIL E-SERVICES.pdf
+  title: PRÉSENTATION DU PORTAIL E-SERVICES
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: procedure_dgi
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: 6f64f0e49e428012c9e55633e38caab4121949f77c8c952879ebaa87c39e21f0
+  duplicate_of: null
+  notes: ''
+- id: procedure-de-remboursement-du-credit-de-tva
+  path: Fiscal/PROCEDURE/PROCÉDURE DE REMBOURSEMENT DU CRÉDIT DE TVA.pdf
+  title: PROCÉDURE DE REMBOURSEMENT DU CRÉDIT DE TVA
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: procedure_dgi
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: 8a5c23677a81307d3cd9c077e67beabfa124044747befd2070f090499529ee25
+  duplicate_of: null
+  notes: ''
+- id: procedure-de-teledeclaration-sur-e-services
+  path: Fiscal/PROCEDURE/PROCÉDURE DE TELEDECLARATION SUR E-SERVICES.pdf
+  title: PROCÉDURE DE TELEDECLARATION SUR E-SERVICES
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: procedure_dgi
+  source_level: 2
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: ad822bb7a97c0d9fb78f2aa83cb0876e894f7507155259448f4bb8337e236e57
+  duplicate_of: null
+  notes: ''
+- id: sommaire-de-la-politique-fiscale-2025
+  path: Fiscal/SOMMAIRE DE LA POLITIQUE FISCALE-2025.pdf
+  title: SOMMAIRE DE LA POLITIQUE FISCALE-2025
+  domain: fiscal
+  country: BJ
+  organization: DGI Bénin
+  document_type: guide
+  source_level: 3
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: true
+  sha256: fdb3ae36746de4aadfebfae32b4947bfdbd6639ab04fd4938c480b4592d9cb79
+  duplicate_of: null
+  notes: ''
+- id: syscebnl
+  path: Ong et association/SYSCEBNL.pdf
+  title: SYSCEBNL
+  domain: ong_association
+  country: OHADA
+  organization: OHADA
+  document_type: acte_uniforme
+  source_level: 1
+  parser: ohada
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: ea818231ba98d81785f33966176c15d43934f5a2697a196b38456ec737a0457a
+  duplicate_of: null
+  notes: ''
+- id: code-du-travail-en-republique-du-benin
+  path: Social/Code du travail en République du Bénin.pdf
+  title: Code du travail en République du Bénin
+  domain: social
+  country: BJ
+  organization: ''
+  document_type: code_republication
+  source_level: 4
+  parser: droit_afrique
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: 792dfa14111971bb57e47309926a7ba3a16fb5d9fc0c71b632f2e6a1d4d2b113
+  duplicate_of: null
+  notes: ''
+- id: le-code-social-et-jurisprudence-en-republique-du-benin
+  path: Social/Le Code Social et Jurisprudence en République du Bénin.pdf
+  title: Le Code Social et Jurisprudence en République du Bénin
+  domain: social
+  country: BJ
+  organization: ''
+  document_type: compilation_annotee
+  source_level: 4
+  parser: generic
+  level_confirmed: false
+  version_label: null
+  status: en_vigueur
+  has_text_layer: true
+  in_mvp: false
+  sha256: c92beb3b51b8431df69caf2c22d44485a9e2397a996b3599bcc6643a7d1ff03f
+  duplicate_of: null
+  notes: ''
