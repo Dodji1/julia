@@ -11,8 +11,8 @@ Plateforme legal tech de recherche juridique sourcée (RAG) sur le droit africai
 |---|---|---|
 | 1 | Analyse et architecture | ✅ |
 | 2 | Structure du projet, configuration, interfaces, manifeste du corpus | ✅ (ce dépôt) |
-| 3 | Landing page Vitalia | à venir |
-| 4 | Interface de chat Julia | à venir |
+| 3 | Landing page Vitalia | ✅ V0 React |
+| 4 | Interface de chat Julia | ✅ V0 mockable |
 | 5 | Backend FastAPI + schéma de base | à venir |
 | 6 | Pipeline d'ingestion (CGI, puis OCR) | à venir |
 | 7-9 | RAG, DeepSeek, citations vérifiées | à venir |
@@ -34,6 +34,21 @@ pip install -r requirements.txt
 uvicorn backend.main:app --reload
 python -m pytest -q             # 16 tests
 ```
+
+Frontend :
+
+```bash
+cd frontend
+cp .env.example .env            # mock par défaut ; utiliser VITE_API_MODE=live avec FastAPI
+npm ci
+npm run dev                     # http://localhost:5173
+npm test
+npm run build
+```
+
+Le contrat attendu par le frontend est documenté dans
+[`docs/api/frontend-contract.yaml`](docs/api/frontend-contract.yaml). En mode `live`, Vite transmet `/api`
+à FastAPI sur `http://localhost:8000`.
 
 ## Corpus
 
@@ -60,7 +75,7 @@ CGI 2025 (archivé) coexistent, 31 documents fiscaux dans le périmètre MVP.
 ## Architecture
 
 ```
-Frontend (Next.js)  →  FastAPI  →  RAG Orchestrator
+Frontend (React + Vite)  →  FastAPI  →  RAG Orchestrator
   Query Analyzer → Retriever (pgvector + plein texte + filtres) → Reranker
   → Context Builder → LLMProvider → Citation Verifier
 PostgreSQL + pgvector  ←  Pipeline d'ingestion (manifeste → extraction/OCR → parseur d'articles → embeddings)
@@ -84,7 +99,7 @@ Interfaces interchangeables (`backend/rag/*/base.py`) :
 
 ```
 backend/   api · core (config, enums) · models (schémas) · services · rag/{ingestion,chunking,embeddings,retrieval,reranking,generation,verification}
-frontend/  app · components · services · styles           (étapes 3-4)
+frontend/  React · composants · client API typé · tests    (étapes 3-4)
 data/      raw (non versionné) · processed · metadata/corpus_manifest.yaml
 scripts/   build_manifest.py
 tests/     test_core.py · test_manifest.py · eval/questions_fiscal_bj.yaml (à compléter avec un fiscaliste)

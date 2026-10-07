@@ -1,0 +1,136 @@
+openapi: 3.1.0
+info:
+  title: Julia RAG API — contrat frontend V0
+  version: 0.1.0
+  description: Contrat minimal entre l’interface React et le backend FastAPI.
+paths:
+  /api/v1/answers:
+    post:
+      operationId: createAnswer
+      summary: Répondre à une question juridique à partir du corpus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerRequest'
+      responses:
+        '200':
+          description: Réponse, refus sourcé ou demande de clarification
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerResponse'
+        '422':
+          description: Requête invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Erreur interne du moteur RAG
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    AnswerRequest:
+      type: object
+      additionalProperties: false
+      required: [question, filters]
+      properties:
+        question:
+          type: string
+          minLength: 3
+          maxLength: 4000
+        filters:
+          $ref: '#/components/schemas/AnswerFilters'
+    AnswerFilters:
+      type: object
+      additionalProperties: false
+      required: [domain, jurisdiction]
+      properties:
+        domain:
+          type: string
+          enum: [fiscal]
+        jurisdiction:
+          type: string
+          enum: [BJ]
+    AnswerResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - request_id
+        - conversation_id
+        - status
+        - answer_markdown
+        - sources
+      properties:
+        request_id:
+          type: string
+        conversation_id:
+          type: string
+        status:
+          type: string
+          enum: [answered, insufficient_sources, clarification_required]
+        answer_markdown:
+          type: string
+          description: Réponse ou demande de clarification. Les citations utilisent [1], [2], etc.
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerSource'
+    AnswerSource:
+      type: object
+      additionalProperties: false
+      required:
+        - citation_id
+        - document_id
+        - title
+        - status
+        - excerpt
+        - document_url
+        - is_ocr
+      properties:
+        citation_id:
+          type: string
+          pattern: '^[1-9][0-9]*$'
+        document_id:
+          type: string
+        title:
+          type: string
+        article:
+          type: [string, 'null']
+        page:
+          type: [integer, 'null']
+          minimum: 1
+        version:
+          type: [string, 'null']
+        status:
+          type: string
+          enum: [en_vigueur, archive, a_verifier]
+        excerpt:
+          type: string
+          description: Extrait exact relu depuis la base documentaire, jamais généré par le LLM.
+        document_url:
+          type: string
+          description: URL ouvrant le document original, de préférence à la page citée.
+        is_ocr:
+          type: boolean
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message, request_id]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            request_id:
+              type: string
