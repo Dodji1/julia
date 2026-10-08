@@ -3,12 +3,14 @@ import {
   BookOpenCheck,
   Check,
   FileCheck2,
+  Fingerprint,
   Search,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react'
 
 import { Brand } from './Brand'
+import { LegalIntelligenceVisual } from './LegalIntelligenceVisual'
 
 interface LandingPageProps {
   onStart: () => void
@@ -17,18 +19,21 @@ interface LandingPageProps {
 const benefits = [
   {
     icon: Search,
-    title: 'Recherche accélérée',
-    text: 'Interrogez des centaines de pages en langage naturel et trouvez rapidement les passages utiles.',
+    label: 'Trouver',
+    title: 'La bonne règle, sans parcourir des centaines de pages.',
+    text: 'Formulez votre situation en langage naturel. Julia identifie les passages les plus pertinents dans le corpus activé.',
   },
   {
     icon: FileCheck2,
-    title: 'Réponses vérifiables',
-    text: 'Chaque affirmation est reliée au texte, à l’article, à la version et à la page qui la fondent.',
+    label: 'Vérifier',
+    title: 'Chaque affirmation revient au texte qui la fonde.',
+    text: 'Article, version, page et statut : la preuve reste visible, consultable et prête à être contrôlée.',
   },
   {
     icon: BookOpenCheck,
-    title: 'Raisonnement lisible',
-    text: 'Julia sépare la règle, son analyse et les points à faire valider par un professionnel.',
+    label: 'Comprendre',
+    title: 'Une lecture claire qui respecte la nuance juridique.',
+    text: 'La règle, son analyse et les limites de la réponse sont présentées distinctement pour mieux décider.',
   },
 ]
 
@@ -39,102 +44,102 @@ const domains = [
   ['Comptabilité', 'SYSCOHADA et référentiels comptables', false],
 ] as const
 
+const journey = [
+  ['01', 'Questionnez', 'Décrivez votre situation comme vous la présenteriez à un confrère.'],
+  ['02', 'Julia recherche', 'Le moteur parcourt uniquement le corpus juridique sélectionné.'],
+  ['03', 'Vérifiez', 'La réponse et ses références apparaissent ensemble, sans boîte noire.'],
+] as const
+
 export function LandingPage({ onStart }: LandingPageProps) {
   return (
     <div className="site-shell">
       <header className="site-header">
         <div className="container site-header__inner">
-          <a href="#top" className="brand-link" aria-label="Vitalia, accueil">
-            <Brand inverted />
-          </a>
+          <a href="#top" className="brand-link" aria-label="Vitalia, accueil"><Brand inverted /></a>
           <nav aria-label="Navigation principale">
             <a href="#plateforme">Plateforme</a>
-            <a href="#domaines">Domaines</a>
+            <a href="#experience">Expérience</a>
+            <a href="#domaines">Corpus</a>
             <a href="#confiance">Confiance</a>
           </nav>
           <button className="button button--header" type="button" onClick={onStart}>
-            Essayer Julia <ArrowRight size={16} />
+            Ouvrir Julia <ArrowRight size={16} />
           </button>
         </div>
       </header>
 
       <main>
         <section className="hero" id="top">
-          <div className="hero__glow hero__glow--one" />
-          <div className="hero__glow hero__glow--two" />
+          <div className="hero__aurora" aria-hidden="true" />
           <div className="container hero__grid">
             <div className="hero__content">
-              <div className="eyebrow">
-                <Sparkles size={15} /> Une IA juridique pensée pour l’Afrique
-              </div>
-              <h1>L'intelligence juridique au service du droit africain.</h1>
+              <div className="eyebrow"><Sparkles size={15} /> Conçue pour les professionnels du droit africain</div>
+              <h1>L'intelligence juridique <em>au service</em> du droit africain.</h1>
               <p className="hero__lead">
-                Recherchez, comprenez et vérifiez les textes fiscaux béninois avec
-                Julia, l’assistante qui cite précisément ses sources.
+                Julia transforme les textes fiscaux béninois en réponses claires,
+                traçables et immédiatement vérifiables.
               </p>
               <div className="hero__actions">
                 <button className="button button--primary" type="button" onClick={onStart}>
                   Poser une question <ArrowRight size={18} />
                 </button>
-                <a className="button button--ghost" href="#plateforme">
-                  Découvrir la plateforme
-                </a>
+                <a className="button button--ghost" href="#experience">Voir comment ça marche</a>
               </div>
-              <div className="hero__proof">
-                <span><Check size={14} /> Sources officielles</span>
-                <span><Check size={14} /> Références vérifiables</span>
-                <span><Check size={14} /> Données maîtrisées</span>
+              <div className="hero__proof" aria-label="Principes de Julia">
+                <span><Check size={14} /> Corpus maîtrisé</span>
+                <span><Check size={14} /> Citations précises</span>
+                <span><Check size={14} /> Réponse prudente</span>
               </div>
             </div>
+            <LegalIntelligenceVisual />
+          </div>
+          <a className="hero__scroll" href="#plateforme" aria-label="Découvrir la plateforme">
+            <span>Explorer</span><i />
+          </a>
+        </section>
 
-            <div className="answer-preview" aria-label="Aperçu d’une réponse sourcée">
-              <div className="answer-preview__top">
-                <div className="avatar avatar--julia">J</div>
-                <div><strong>Julia</strong><small>Assistante juridique</small></div>
-                <span className="live-pill"><i /> Aperçu de l’interface</span>
-              </div>
-              <p className="answer-preview__question">
-                Comment Julia présente-t-elle une réponse juridique ?
-              </p>
-              <div className="answer-preview__answer">
-                <span className="answer-label">Format de réponse</span>
-                <p>
-                  Une synthèse concise, suivie des textes qui permettent de vérifier
-                  chaque affirmation.
-                </p>
-                <div className="citation-line">
-                  <span>1</span>
-                  <div>
-                    <strong>Source officielle retournée par Julia</strong>
-                    <small>Article · version · page · statut</small>
-                  </div>
-                  <ArrowRight size={16} />
-                </div>
-              </div>
-              <p className="answer-preview__foot">
-                <ShieldCheck size={15} /> Pas de source, pas d’affirmation juridique.
-              </p>
+        <section className="statement-strip" aria-label="Promesse de Julia">
+          <div className="container statement-strip__inner">
+            <span>Une nouvelle façon de travailler</span>
+            <p>Moins de temps à chercher. Plus de temps pour <em>comprendre et conseiller.</em></p>
+          </div>
+        </section>
+
+        <section className="section section--platform" id="plateforme">
+          <div className="container">
+            <div className="section-heading">
+              <span className="section-kicker">Intelligence documentaire</span>
+              <h2>La puissance de l’IA.<br /><em>La rigueur du droit.</em></h2>
+              <p>Une expérience pensée pour accélérer la recherche sans jamais masquer la source.</p>
+            </div>
+            <div className="benefit-grid">
+              {benefits.map(({ icon: Icon, label, title, text }, index) => (
+                <article className={`benefit-card benefit-card--${index + 1}`} key={title}>
+                  <div className="benefit-card__top"><span>0{index + 1}</span><Icon size={24} /></div>
+                  <span className="benefit-card__label">{label}</span>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                  <div className="benefit-card__line" aria-hidden="true" />
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="section section--light" id="plateforme">
-          <div className="container">
-            <div className="section-heading">
-              <span className="section-kicker">Une recherche plus fiable</span>
-              <h2>Du texte officiel à une réponse exploitable.</h2>
-              <p>
-                Julia transforme un corpus juridique complexe en réponses claires,
-                tout en vous laissant le contrôle de la vérification.
-              </p>
+        <section className="experience-section" id="experience">
+          <div className="container experience-grid">
+            <div className="experience-copy">
+              <span className="section-kicker">Simple par nature</span>
+              <h2>De la question à la preuve, <em>en un seul parcours.</em></h2>
+              <p>Julia garde le raisonnement lisible. Vous savez ce qui a été cherché, ce qui fonde la réponse et ce qui demande encore vérification.</p>
+              <button className="text-link" type="button" onClick={onStart}>Essayer le parcours <ArrowRight size={17} /></button>
             </div>
-            <div className="benefit-grid">
-              {benefits.map(({ icon: Icon, title, text }, index) => (
-                <article className="benefit-card" key={title}>
-                  <span className="benefit-card__index">0{index + 1}</span>
-                  <span className="benefit-card__icon"><Icon size={22} /></span>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
+            <div className="journey" aria-label="Les trois étapes de Julia">
+              {journey.map(([number, title, text], index) => (
+                <article className="journey__step" key={number}>
+                  <span className="journey__number">{number}</span>
+                  <div><h3>{title}</h3><p>{text}</p></div>
+                  {index < journey.length - 1 && <i aria-hidden="true" />}
                 </article>
               ))}
             </div>
@@ -145,18 +150,16 @@ export function LandingPage({ onStart }: LandingPageProps) {
           <div className="container domains-layout">
             <div className="section-heading section-heading--left">
               <span className="section-kicker">Corpus maîtrisé</span>
-              <h2>Nous ouvrons chaque domaine après vérification.</h2>
-              <p>
-                La fiscalité béninoise constitue le premier périmètre. Les autres
-                domaines seront activés progressivement.
-              </p>
+              <h2>Chaque domaine s’ouvre <em>après vérification.</em></h2>
+              <p>La fiscalité béninoise constitue le premier périmètre. Les prochains corpus seront activés progressivement.</p>
+              <div className="corpus-seal"><Fingerprint size={24} /><div><strong>Périmètre explicite</strong><span>Vous savez toujours où Julia cherche.</span></div></div>
             </div>
             <div className="domain-list">
-              {domains.map(([title, text, active]) => (
+              {domains.map(([title, text, active], index) => (
                 <article className={`domain-row${active ? ' domain-row--active' : ''}`} key={title}>
-                  <span className="domain-row__state">{active ? <Check size={17} /> : null}</span>
+                  <span className="domain-row__number">0{index + 1}</span>
                   <div><h3>{title}</h3><p>{text}</p></div>
-                  <span className="domain-row__badge">{active ? 'Disponible' : 'Bientôt'}</span>
+                  <span className="domain-row__badge">{active ? <><i /> Disponible</> : 'Prochainement'}</span>
                 </article>
               ))}
             </div>
@@ -164,25 +167,26 @@ export function LandingPage({ onStart }: LandingPageProps) {
         </section>
 
         <section className="trust-section" id="confiance">
+          <div className="trust-orb" aria-hidden="true"><ShieldCheck size={54} /></div>
           <div className="container trust-section__grid">
             <div>
-              <span className="section-kicker section-kicker--dark">Notre principe</span>
-              <h2>Des réponses fondées sur les textes, pas sur des suppositions.</h2>
+              <span className="section-kicker section-kicker--dark">Confiance intégrée</span>
+              <h2>La transparence n’est pas une option. <em>C’est le produit.</em></h2>
+              <p>Julia vous aide à aller plus vite, tout en gardant le professionnel au centre de la décision.</p>
             </div>
             <div className="trust-rules">
-              <div><strong>01</strong><p>Sans passage pertinent dans le corpus, Julia refuse de conclure.</p></div>
-              <div><strong>02</strong><p>La règle juridique est distinguée de l’analyse produite par l’IA.</p></div>
-              <div><strong>03</strong><p>Les extraits cités sont relus depuis la base documentaire.</p></div>
+              <div><strong>01</strong><p><b>Pas de source, pas de conclusion.</b><br />Julia signale quand le corpus ne suffit pas.</p></div>
+              <div><strong>02</strong><p><b>Une réponse que l’on peut auditer.</b><br />Chaque citation ouvre son contexte documentaire.</p></div>
+              <div><strong>03</strong><p><b>Le jugement reste humain.</b><br />L’outil éclaire la décision, il ne remplace pas le conseil.</p></div>
             </div>
           </div>
         </section>
 
         <section className="cta-section">
           <div className="container cta-card">
-            <div><span>Julia est prête</span><h2>Posez votre première question juridique.</h2></div>
-            <button className="button button--primary" type="button" onClick={onStart}>
-              Démarrer la recherche <ArrowRight size={18} />
-            </button>
+            <div className="cta-card__mark" aria-hidden="true"><Sparkles size={25} /></div>
+            <div><span>Prêt à explorer ?</span><h2>Votre recherche juridique commence ici.</h2></div>
+            <button className="button button--primary" type="button" onClick={onStart}>Démarrer avec Julia <ArrowRight size={18} /></button>
           </div>
         </section>
       </main>

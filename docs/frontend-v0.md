@@ -15,6 +15,16 @@ Fournir une démonstration fiable de Julia pour le congrès, centrée sur la fis
   démonstration et ne simule aucune règle juridique.
 - Mode `live` avec `VITE_API_MODE=live`, utilisant `POST /api/v1/answers`.
 
+## Système d’interface
+
+- Direction « legal-tech premium » : bleu nuit, ivoire, bleu cobalt et accent menthe réservé aux états fiables.
+- Hiérarchie éditoriale associant une serif expressive pour les messages clés et une sans-serif lisible pour
+  l’interface.
+- Identité Vitalia dessinée en SVG et cartographie documentaire animée sans image externe.
+- Animations limitées aux transitions utiles (flux documentaire, apparition des réponses et tiroir de source),
+  toutes neutralisées avec `prefers-reduced-motion`.
+- Mise en page responsive adaptée au bureau, à la tablette et au mobile.
+
 ## Parcours livré
 
 1. La landing page présente le positionnement, les garanties et le périmètre fiscal actif.
@@ -23,6 +33,8 @@ Fournir une démonstration fiable de Julia pour le congrès, centrée sur la fis
 4. Julia affiche soit une réponse et ses sources, soit un refus explicite en cas de sources insuffisantes.
 5. Une source ouvre un panneau contenant document, article, page, version, statut, extrait et lien original.
 6. Les passages OCR sont signalés et les erreurs réseau conservent la question saisie.
+7. La réponse complète peut être copiée avec une confirmation visuelle ; le panneau de source se ferme aussi
+   avec la touche Échap.
 
 ## États de réponse
 
@@ -55,6 +67,8 @@ par le LLM. `document_url` doit ouvrir le document original, idéalement à la p
 - ouverture du chatbot depuis la landing page ;
 - envoi des filtres attendus à FastAPI ;
 - réponse sourcée et panneau de détail ;
+- fermeture clavier du panneau de source ;
+- copie de la réponse et confirmation de l’action ;
 - restitution fidèle du statut d’un document archivé ;
 - refus en cas de sources insuffisantes ;
 - conservation de la saisie après une erreur réseau ;

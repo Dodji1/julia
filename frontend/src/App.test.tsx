@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -84,6 +84,11 @@ describe('Julia frontend', () => {
     expect(
       within(sourceDetails).getByText(/la déclaration doit être déposée/i),
     ).toBeVisible()
+
+    fireEvent.keyDown(document, { key: 'Escape' })
+    expect(
+      screen.queryByRole('complementary', { name: /détail de la source/i }),
+    ).not.toBeInTheDocument()
   })
 
   it('identifies an answer that has insufficient legal sources', async () => {
@@ -127,5 +132,33 @@ describe('Julia frontend', () => {
       /impossible de joindre le service/i,
     )
     expect(question).toHaveValue('La TVA est-elle applicable ?')
+  })
+
+  it('copies the complete answer and confirms the action', async () => {
+    const user = userEvent.setup()
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    })
+    const askQuestion = vi.fn().mockResolvedValue({
+      requestId: 'req-copy',
+      conversationId: 'conv-copy',
+      status: 'answered',
+      answerMarkdown: 'Réponse juridique à copier. [1]',
+      sources: [],
+    })
+
+    render(<App askQuestion={askQuestion} initialView="chat" />)
+
+    await user.type(
+      screen.getByRole('textbox', { name: /votre question juridique/i }),
+      'Copie cette réponse',
+    )
+    await user.click(screen.getByRole('button', { name: /envoyer/i }))
+    await user.click(await screen.findByRole('button', { name: /^copier$/i }))
+
+    expect(writeText).toHaveBeenCalledWith('Réponse juridique à copier. [1]')
+    expect(screen.getByRole('button', { name: /copiée/i })).toBeVisible()
   })
 })

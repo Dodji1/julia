@@ -1,4 +1,10 @@
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
+import {
+  FormEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import {
   ArrowLeft,
   ArrowUp,
@@ -48,6 +54,7 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
   const questionRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => questionRef.current?.focus(), [])
@@ -60,6 +67,7 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
     setIsLoading(true)
     setError(null)
     setSelectedSource(null)
+    setCopied(false)
 
     try {
       const response = await askQuestion({
@@ -78,12 +86,23 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
     }
   }
 
-  function handleComposerKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+  function handleComposerKeyDown(event: ReactKeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
       void submitQuestion()
     }
   }
+
+  useEffect(() => {
+    if (!selectedSource) return
+
+    function closeSourceDrawer(event: globalThis.KeyboardEvent) {
+      if (event.key === 'Escape') setSelectedSource(null)
+    }
+
+    document.addEventListener('keydown', closeSourceDrawer)
+    return () => document.removeEventListener('keydown', closeSourceDrawer)
+  }, [selectedSource])
 
   function startNewChat() {
     setSubmittedQuestion(null)
@@ -91,8 +110,15 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
     setError(null)
     setSelectedSource(null)
     setQuestion('')
+    setCopied(false)
     setSidebarOpen(false)
     requestAnimationFrame(() => questionRef.current?.focus())
+  }
+
+  async function copyAnswer() {
+    if (!answer) return
+    await navigator.clipboard.writeText(answer.answerMarkdown)
+    setCopied(true)
   }
 
   return (
@@ -211,7 +237,10 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
                   </div>
                 )}
                 <div className="answer-actions">
-                  <button type="button"><Copy size={15} /> Copier</button>
+                  <button type="button" onClick={() => void copyAnswer()}>
+                    {copied ? <CheckCircle2 size={15} /> : <Copy size={15} />}
+                    {copied ? 'Copiée' : 'Copier'}
+                  </button>
                   <span />
                   <button type="button" aria-label="Réponse utile"><ThumbsUp size={15} /></button>
                   <button type="button" aria-label="Réponse à améliorer"><ThumbsDown size={15} /></button>
