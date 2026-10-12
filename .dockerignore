@@ -1,0 +1,13 @@
+.git
+.worktrees
+.venv
+.env
+**/__pycache__
+.pytest_cache
+frontend
+data/raw
+data/processed
+tests
+docs
+*.html
+*.jpeg

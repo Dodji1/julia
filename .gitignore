@@ -1,4 +1,6 @@
 .env
+.venv/
+.worktrees/
 __pycache__/
 *.pyc
 .pytest_cache/
@@ -8,3 +10,4 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+*.stackdump
