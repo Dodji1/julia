@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import glob
+import json
 import logging
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
@@ -26,6 +27,7 @@ from pydantic import ValidationError
 
 from backend.db import EMBEDDING_DIMENSION
 from backend.indexing.manifest import Manifest, load_manifest
+from backend.indexing.quality import QualityCheck, quality_report
 from backend.rag.interfaces import Embedder
 from contracts import LegalChunk
 
@@ -221,6 +223,23 @@ def _chunk_row(chunk: LegalChunk) -> tuple:
     )
 
 
+def _log_quality(checks: Sequence[QualityCheck], report_path: Path | None) -> None:
+    if not checks:
+        logger.info("Contrôles de qualité : aucune anomalie.")
+    for check in checks:
+        logger.warning(
+            "Qualité — %s : %d cas, %s. Exemples : %s",
+            check.code, len(check.items), check.description, " ; ".join(check.items[:3]),
+        )
+    if report_path is not None:
+        report = [
+            {"code": check.code, "description": check.description, "count": len(check.items), "items": check.items}
+            for check in checks
+        ]
+        report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+        logger.info("Rapport de qualité complet : %s", report_path)
+
+
 def expand_paths(patterns: Sequence[str]) -> list[Path]:
     """Développe les motifs (PowerShell ne le fait pas)."""
     paths: list[Path] = []
@@ -237,6 +256,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--corpus-version", default=datetime.now(UTC).strftime("%Y%m%d-%H%M%S"))
     parser.add_argument("--prune", action="store_true", help="supprimer les documents absents des JSONL")
     parser.add_argument("--dry-run", action="store_true", help="valider sans calculer ni écrire")
+    parser.add_argument("--report", type=Path, help="écrire le rapport de qualité complet (JSON)")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
@@ -255,6 +275,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 1
 
     documents = len({chunk.document_id for chunk in chunks})
+    _log_quality(quality_report(chunks, manifest), args.report)
     if args.dry_run:
         logger.info("Validation réussie : %d chunks, %d documents, %d fichiers.", len(chunks), documents, len(paths))
         return 0
@@ -269,7 +290,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         logger.error("JULIA_DATABASE_URL n'est pas défini.")
         return 1
     migrate(settings.database_url)
-    embedder = build_embedder(settings.embedding_model, device=settings.model_device)
+    embedder = build_embedder(
+        settings.embedding_model, device=settings.model_device, max_tokens=settings.embedding_max_tokens
+    )
     with psycopg.connect(settings.database_url) as conn:
         register_vector(conn)
         report = index_corpus(

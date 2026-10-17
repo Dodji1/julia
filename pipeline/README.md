@@ -26,7 +26,21 @@ conformité des fichiers de sortie au contrat.
 
 ```bash
 python -m backend.indexing --chunks "data/processed/chunks/*.jsonl" --dry-run   # validation seule
+python -m backend.indexing --chunks "data/processed/chunks/*.jsonl" --dry-run --report qualite.json
 python -m backend.indexing --chunks "data/processed/chunks/*.jsonl"             # embeddings + base
 ```
+
+La validation refuse les fichiers qui ne respectent pas le contrat. Les contrôles de qualité, eux,
+n'empêchent pas l'indexation mais signalent ce qu'il faut corriger (`--report` écrit la liste complète) :
+
+| Code | Problème | Correction attendue |
+|---|---|---|
+| `documents_mvp_absents` | document du périmètre MVP sans chunk | traiter le document (souvent un scan à passer à l'OCR) |
+| `trop_long` | chunk de plus de 4 000 caractères | redécouper, par alinéa ou paragraphe |
+| `trop_court` | chunk de moins de 60 caractères, souvent un titre seul | fusionner le titre avec le texte qui suit |
+| `ocr_incoherent` | `is_ocr: true` sur un document qui a une couche texte | ne mettre `true` que sur le texte issu de l'OCR |
+| `article_suspect` | numéro d'article qui ne commence pas par un chiffre | corriger la détection des articles |
+| `hierarchie_suspecte` | `title`, `chapter` ou `section` reprend le début du texte | n'y mettre que les intitulés (Livre, Titre, Chapitre, Section) |
+| `doublon_dans_document` | même texte répété dans un document | retirer en-têtes et pieds de page |
 
 Dépendances : `pip install -r requirements-pipeline.txt` (et Tesseract installé sur la machine pour l'OCR).

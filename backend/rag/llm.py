@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import logging
+import re
 from collections.abc import Mapping, Sequence
 from typing import Any
 
@@ -82,6 +84,28 @@ class OpenAICompatibleLLM:
 
     def close(self) -> None:
         self._client.close()
+
+
+class ExtractiveLLM:
+    """Mode test sans LLM : cite les meilleurs passages au lieu de rédiger une réponse.
+
+    Sert à tester l'interface et la recherche sur le vrai corpus sans clé API. Interdit en production.
+    """
+
+    def __init__(self, max_citations: int = 3) -> None:
+        self._max_citations = max_citations
+
+    def complete_json(self, system: str, user: str) -> LLMCompletion:
+        labels = re.findall(r'<passage id="(P\d+)">', user)[: self._max_citations]
+        if not labels:
+            payload = {"status": "insufficient_sources", "answer_markdown": ""}
+        else:
+            payload = {
+                "status": "answered",
+                "answer_markdown": "**Mode test sans LLM : aucune réponse n'est rédigée.**\n\n"
+                "Passages les plus pertinents pour cette question : " + "".join(f"[{label}]" for label in labels),
+            }
+        return LLMCompletion(text=json.dumps(payload, ensure_ascii=False), model="extractive")
 
 
 class FallbackLLM:

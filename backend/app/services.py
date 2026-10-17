@@ -10,7 +10,7 @@ from backend.app.config import EngineMode, RerankerMode, Settings
 from backend.rag.engine import EngineSettings, RagEngine, load_system_prompt
 from backend.rag.fake import DemoLLM, InMemoryRetriever, demo_passages
 from backend.rag.interfaces import LLMProvider, LLMUnavailableError
-from backend.rag.llm import FallbackLLM, OpenAICompatibleLLM
+from backend.rag.llm import ExtractiveLLM, FallbackLLM, OpenAICompatibleLLM
 from backend.rag.models import NoopReranker
 from backend.rag.types import LLMCompletion
 from backend.stores import (
@@ -54,6 +54,7 @@ def engine_settings(settings: Settings) -> EngineSettings:
         context_k=settings.context_k,
         min_relevance=settings.min_relevance,
         reference_year=settings.reference_year,
+        max_passage_chars=settings.max_passage_chars,
     )
 
 
@@ -116,7 +117,9 @@ def build_postgres_services(settings: Settings) -> Services:
         configure=configure_connection,
         open=True,
     )
-    embedder = build_embedder(settings.embedding_model, device=settings.model_device)
+    embedder = build_embedder(
+        settings.embedding_model, device=settings.model_device, max_tokens=settings.embedding_max_tokens
+    )
     reranker = (
         CrossEncoderReranker(settings.reranker_model, device=settings.model_device)
         if settings.reranker is RerankerMode.CROSS_ENCODER
@@ -140,6 +143,9 @@ def build_postgres_services(settings: Settings) -> Services:
 
 
 def build_llm(settings: Settings) -> LLMProvider:
+    if settings.llm_provider == "extractive":
+        logger.warning("Mode test sans LLM : les réponses citent les passages sans les rédiger.")
+        return ExtractiveLLM()
     providers: list[LLMProvider] = []
     if settings.llm_api_key is not None:
         providers.append(

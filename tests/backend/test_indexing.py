@@ -11,6 +11,7 @@ from backend.indexing.index_corpus import (
     read_chunks,
 )
 from backend.indexing.manifest import load_manifest
+from backend.indexing.quality import quality_report
 from contracts import LegalChunk
 
 REAL_MANIFEST = Path(__file__).resolve().parents[2] / "data" / "metadata" / "corpus_manifest.yaml"
@@ -40,6 +41,16 @@ entries:
   status: en_vigueur
   has_text_layer: false
   duplicate_of: note
+- id: arrete-2020
+  path: Fiscal/ARRETE/arrete-2020.pdf
+  title: arrete 2020
+  domain: fiscal
+  country: BJ
+  document_type: arrete_ou_acte
+  source_level: 1
+  status: en_vigueur
+  has_text_layer: false
+  in_mvp: true
 """
 
 
@@ -126,7 +137,51 @@ def test_dry_run_validates_without_a_database(tmp_path, manifest, monkeypatch):
     good.write_text(chunk().model_dump_json() + "\n", encoding="utf-8")
     bad = tmp_path / "bad.jsonl"
     bad.write_text(chunk(status="archive").model_dump_json() + "\n", encoding="utf-8")
+    report = tmp_path / "qualite.json"
     monkeypatch.delenv("JULIA_DATABASE_URL", raising=False)
 
-    assert main(["--chunks", str(tmp_path / "good*.jsonl"), "--manifest", str(manifest_path), "--dry-run"]) == 0
+    args = ["--manifest", str(manifest_path), "--dry-run", "--report", str(report)]
+    assert main(["--chunks", str(tmp_path / "good*.jsonl"), *args]) == 0
+    assert {check["code"] for check in json.loads(report.read_text(encoding="utf-8"))} == {
+        "documents_mvp_absents", "trop_court",
+    }
     assert main(["--chunks", str(bad), "--manifest", str(manifest_path), "--dry-run"]) == 1
+
+
+NORMAL_TEXT = "Texte de l'article, assez long pour ne pas passer pour un simple intitulé isolé."
+
+
+def test_quality_report_flags_what_the_pipeline_must_fix(manifest):
+    heading = "Les bénéfices réalisés par les sociétés et autres personnes morales sont imposables"
+    repeated = "Journal officiel de la République du Bénin, numéro spécial, en-tête répété en haut de page"
+    chunks = [
+        chunk(content="x" * 4500),
+        chunk(chunk_id="cgi-2026:2", ordinal=1, article="2", content="Article 2"),
+        chunk(chunk_id="cgi-2026:3", ordinal=2, article="icl", is_ocr=True, content=NORMAL_TEXT),
+        chunk(chunk_id="cgi-2026:4", ordinal=3, article="4", title=heading, content=f"Article 4 : {heading} à l'IS."),
+        chunk(chunk_id="cgi-2026:5", ordinal=4, article="5", content=repeated),
+        chunk(chunk_id="cgi-2026:6", ordinal=5, article="6", content=repeated),
+    ]
+
+    checks = {check.code: check.items for check in quality_report(chunks, manifest)}
+
+    assert checks == {
+        "documents_mvp_absents": ["arrete-2020"],
+        "trop_long": ["cgi-2026:art-1 (4500 car.)"],
+        "trop_court": ["cgi-2026:2 : « Article 2 »"],
+        "ocr_incoherent": ["cgi-2026 (1/6 chunks)"],
+        "article_suspect": ["cgi-2026:3 : article « icl »"],
+        "hierarchie_suspecte": [f"cgi-2026:4 : « {heading[:50]} »"],
+        "doublon_dans_document": [f"cgi-2026 : 2 fois « {repeated[:40]} »"],
+    }
+
+
+def test_clean_chunks_produce_no_quality_warning(manifest):
+    chunks = [chunk(content=NORMAL_TEXT), chunk(chunk_id="cgi-2026:art-2", ordinal=1, article="2", content=NORMAL_TEXT + " Bis.")]
+    clean_manifest = load_manifest_without("arrete-2020", manifest)
+
+    assert quality_report(chunks, clean_manifest) == []
+
+
+def load_manifest_without(document_id, manifest):
+    return type(manifest)(manifest.source_root, {k: v for k, v in manifest.entries.items() if k != document_id})

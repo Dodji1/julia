@@ -38,6 +38,7 @@ class EngineSettings:
     context_k: int = 8
     min_relevance: float = 0.45
     reference_year: int = 2026
+    max_passage_chars: int = 6000
 
 
 class RagEngine:
@@ -74,7 +75,7 @@ class RagEngine:
         if not self._is_relevant_enough(passages):
             return _insufficient(trace)
 
-        context, labelled = build_context(passages)
+        context, labelled = build_context(passages, self._settings.max_passage_chars)
         with _timed(trace, "generate"):
             status, markdown = self._generate(build_user_message(query.text, context), trace)
 

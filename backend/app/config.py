@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from enum import StrEnum
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -44,7 +44,10 @@ class Settings(BaseSettings):
     context_k: int = Field(default=8, ge=1, le=30)
     min_relevance: float = Field(default=0.45, ge=0.0, le=1.0)
     reference_year: int = 2026
+    max_passage_chars: int = Field(default=6000, ge=500)
+    embedding_max_tokens: int = Field(default=1024, ge=64, le=8192)
 
+    llm_provider: Literal["openai_compatible", "extractive"] = "openai_compatible"
     llm_base_url: str = "https://api.deepseek.com"
     llm_api_key: SecretStr | None = None
     llm_model: str = "deepseek-flash"
@@ -74,6 +77,7 @@ class Settings(BaseSettings):
                 name
                 for name, ok in (
                     ("JULIA_ENGINE=postgres", self.engine is EngineMode.POSTGRES),
+                    ("JULIA_LLM_PROVIDER=openai_compatible", self.llm_provider == "openai_compatible"),
                     ("JULIA_LLM_API_KEY", self.llm_api_key is not None),
                     ("JULIA_ADMIN_TOKEN", self.admin_token is not None),
                     ("JULIA_TRACE_SALT", self.trace_salt.get_secret_value() != _DEV_SALT),

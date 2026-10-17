@@ -96,6 +96,8 @@ même modèle.
 | Règles de réponse (#8) | `backend/rag/prompts/answer_system.md` |
 | Seuil de refus | `JULIA_MIN_RELEVANCE` (à calibrer sur le jeu d'évaluation) |
 | Nombre de passages | `JULIA_RETRIEVE_K`, `JULIA_CONTEXT_K` |
+| Taille des passages envoyés au LLM | `JULIA_MAX_PASSAGE_CHARS` |
+| Qualité des chunks | `python -m backend.indexing … --dry-run --report qualite.json` (voir `pipeline/README.md`) |
 | Reranker | `JULIA_RERANKER=cross_encoder` (recalibrer le seuil) |
 | Nouvelle stratégie de recherche | une classe qui respecte `Retriever` dans `backend/rag/interfaces.py` |
 | Analyse de la question | `backend/rag/analyzer.py` |
