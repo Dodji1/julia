@@ -6,6 +6,10 @@ __pycache__/
 .pytest_cache/
 node_modules/
 .next/
+.worktrees/
+frontend/dist/
+frontend/coverage/
+*.tsbuildinfo
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*

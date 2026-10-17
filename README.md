@@ -11,8 +11,8 @@ Plateforme legal tech de recherche juridique sourcée (RAG) sur le droit africai
 |---|---|---|
 | 1 | Analyse et architecture | ✅ |
 | 2 | Structure du projet, configuration, interfaces, manifeste du corpus | ✅ (ce dépôt) |
-| 3 | Landing page Vitalia | à venir |
-| 4 | Interface de chat Julia | à venir |
+| 3 | Landing page Vitalia | ✅ V0 React |
+| 4 | Interface de chat Julia | ✅ branchée sur l'API réelle |
 | 5 | Backend FastAPI + schéma de base | ✅ V0 ([docs/backend.md](docs/backend.md)) |
 | 6 | Pipeline d'ingestion (CGI, puis OCR) | à venir — contrat de sortie : [pipeline/README.md](pipeline/README.md) |
 | 7-9 | RAG, DeepSeek, citations vérifiées | moteur et gardes ✅ ; qualité à régler sur le corpus réel |
@@ -31,6 +31,21 @@ python -m pytest -q
 
 Moteur réel : `docker compose up -d db` (PostgreSQL + pgvector sur le port 55432), indexation des chunks,
 puis `JULIA_ENGINE=postgres` et `JULIA_LLM_API_KEY`. Détails dans [docs/backend.md](docs/backend.md).
+
+Frontend :
+
+```bash
+cd frontend
+cp .env.example .env            # mock par défaut ; utiliser VITE_API_MODE=live avec FastAPI
+npm ci
+npm run dev                     # http://localhost:5173
+npm test
+npm run build
+```
+
+Le contrat de l'API est [`docs/api/openapi.json`](docs/api/openapi.json), généré depuis le backend. En mode
+`live`, Vite transmet `/api` à FastAPI sur `http://127.0.0.1:8000`. La version compilée (`npm run build`)
+peut aussi être servie directement par l'API : `JULIA_FRONTEND_DIST=frontend/dist`.
 
 ## Corpus
 
@@ -57,7 +72,7 @@ CGI 2025 (archivé) coexistent, 31 documents fiscaux dans le périmètre MVP.
 ## Architecture
 
 ```
-Frontend (Next.js)  →  FastAPI  →  RAG Orchestrator
+Frontend (React + Vite)  →  FastAPI  →  RAG Orchestrator
   Query Analyzer → Retriever (pgvector + plein texte + filtres) → Reranker
   → Context Builder → LLMProvider → Citation Verifier
 PostgreSQL + pgvector  ←  Pipeline d'ingestion (manifeste → extraction/OCR → parseur d'articles → embeddings)
@@ -84,7 +99,7 @@ backend/   app (FastAPI, routes, schémas = contrat API) · rag (orchestrateur, 
            db (migrations SQL, recherche hybride) · indexing (JSONL LegalChunk → PostgreSQL)
 contracts/ legal_chunk.py — format partagé entre pipeline et backend (#12)
 pipeline/  scripts d'ingestion 01 → 07 (équipe RAG)
-frontend/  app · components · services · styles           (étapes 3-4)
+frontend/  React · composants · client API typé · tests    (étapes 3-4)
 data/      raw (non versionné) · processed · metadata/corpus_manifest.yaml
 scripts/   export_openapi.py (régénère docs/api/openapi.json)
 tests/     backend (unitaires, API) · db (intégration PostgreSQL)
