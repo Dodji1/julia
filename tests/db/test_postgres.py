@@ -16,7 +16,7 @@ from psycopg_pool import ConnectionPool
 
 from backend.db.catalog import PgCatalog
 from backend.db.migrate import migrate
-from backend.db.retriever import PgHybridRetriever
+from backend.db.retriever import FTS_RANK, PgHybridRetriever
 from backend.db.stores import PgFeedbackStore, PgTraceStore, configure_connection
 from backend.indexing.index_corpus import index_corpus
 from backend.indexing.manifest import Manifest, ManifestEntry
@@ -24,7 +24,7 @@ from backend.rag.analyzer import analyze
 from backend.rag.engine import RagEngine
 from backend.rag.fake import HashingEmbedder, ScriptedLLM
 from backend.rag.models import NoopReranker
-from backend.rag.types import AnswerStatus, SearchFilters
+from backend.rag.types import AnalyzedQuery, AnswerStatus, SearchFilters
 from backend.stores import RetrievedHit, TraceRecord
 from contracts import LegalChunk
 
@@ -65,6 +65,12 @@ CHUNKS = [
     _chunk("cgi-2025", 0, "Ancien taux de la taxe sur la valeur ajoutée.", article="224", status="archive"),
     _chunk("ohada-au", 0, "Les sociétés commerciales tiennent une comptabilité.", country="OHADA"),
     _chunk("senegal", 0, "Taxe sur la valeur ajoutée au Sénégal.", country="SN"),
+    # Chunk géant qui contient la formule plusieurs fois : il ne doit pas écraser le chunk précis.
+    _chunk(
+        "ohada-au", 1,
+        " ".join(f"terme{i}" for i in range(3000)) + " taux de la taxe sur la valeur ajoutée." * 5,
+        country="OHADA",
+    ),
 ]
 
 
@@ -81,7 +87,7 @@ def database_url():
     with psycopg.connect(url) as conn:
         register_vector(conn)
         report = index_corpus(conn, CHUNKS, MANIFEST, HashingEmbedder(), corpus_version="test-1")
-    assert (report.documents, report.chunks) == (4, 5)
+    assert (report.documents, report.chunks) == (4, 6)
     return url
 
 
@@ -115,6 +121,25 @@ def test_full_text_search_ignores_accents(pool):
         ).fetchall()
 
     assert [row[0] for row in rows] == ["cgi-2026:1"]
+
+
+def test_full_text_ranking_does_not_favour_giant_chunks(pool):
+    sql = (
+        "SELECT c.chunk_id FROM chunks c, (SELECT plainto_tsquery('french_unaccent', %s) AS q) fq "
+        f"WHERE c.content_tsv @@ fq.q ORDER BY {FTS_RANK} DESC"
+    )
+    with pool.connection() as conn:
+        ranked = [row[0] for row in conn.execute(sql, ("taux taxe valeur ajoutée",)).fetchall()]
+
+    assert ranked.index("cgi-2026:0") < ranked.index("ohada-au:1")
+
+
+def test_a_named_document_restricts_the_article_lookup(retriever):
+    elsewhere = AnalyzedQuery("article 224", ("224",), document_patterns=("%inexistant%",))
+    in_cgi = AnalyzedQuery("article 224", ("224",), document_patterns=("%cgi-2026%",))
+
+    assert not any(p.exact_match for p in retriever.retrieve(elsewhere, FILTERS, 10))
+    assert retriever.retrieve(in_cgi, FILTERS, 10)[0].chunk_id == "cgi-2026:0"
 
 
 def test_archives_are_excluded_unless_the_question_targets_the_past(retriever):
@@ -169,7 +194,7 @@ def test_reindexing_a_document_replaces_its_chunks(database_url):
         # Remettre le corpus initial pour les autres tests du module.
         index_corpus(conn, CHUNKS[:2], MANIFEST, HashingEmbedder(), corpus_version="test-3")
 
-    assert (count, others) == (1, 3)
+    assert (count, others) == (1, 4)
 
 
 def test_traces_and_feedback_are_stored(pool):

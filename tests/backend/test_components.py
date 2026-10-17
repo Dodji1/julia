@@ -24,11 +24,38 @@ from contracts import LegalChunk, article_key
         ("Que dit l'article 224 du CGI ?", ("224",)),
         ("Voir l'art. 1085 ter et l'article 12 - 1", ("1085 ter", "12-1")),
         ("Articles 5 bis", ("5 bis",)),
+        ("Que dit l'article 1er du CGI ?", ("1",)),
+        ("Et l'article premier ?", ("1",)),
         ("Les artisans paient-ils la TPS ?", ()),
     ],
 )
 def test_analyzer_detects_article_references(question, expected):
     assert analyze(question, reference_year=2026).article_keys == expected
+
+
+@pytest.mark.parametrize(
+    ("question", "expected"),
+    [
+        ("Que dit l'article 1er du CGI ?", ("%code-general-des-impots%",)),
+        ("Selon le Code général des impôts, article 5", ("%code-general-des-impots%",)),
+        ("Que prévoit le code des investissements ?", ("%code-des-investissements%",)),
+        ("Que dit l'article 5 ?", ()),
+    ],
+)
+def test_analyzer_detects_named_documents(question, expected):
+    assert analyze(question, reference_year=2026).document_patterns == expected
+
+
+def test_in_memory_retriever_honours_document_hints(make_passage):
+    passage = make_passage(5, document_id="benin-code-general-des-impots-2026")
+    retriever = InMemoryRetriever([passage])
+    filters = SearchFilters("fiscal", "BJ")
+
+    in_cgi = retriever.retrieve(AnalyzedQuery("article 5", ("5",), document_patterns=("%code-general-des-impots%",)), filters, 5)
+    elsewhere = retriever.retrieve(AnalyzedQuery("article 5", ("5",), document_patterns=("%ohada%",)), filters, 5)
+
+    assert in_cgi[0].exact_match is True
+    assert elsewhere == [] or elsewhere[0].exact_match is False
 
 
 def test_analyzer_includes_archives_for_past_years():
@@ -39,6 +66,8 @@ def test_analyzer_includes_archives_for_past_years():
 def test_article_key_normalization():
     assert article_key("Art.  1085   Ter") == "1085 ter"
     assert article_key("Article 12 - 1") == "12-1"
+    assert article_key("1er") == article_key("premier") == "1"
+    assert article_key("10") == "10"
     assert article_key(None) is None
 
 

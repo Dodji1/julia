@@ -24,6 +24,9 @@ class AnalyzedQuery:
     article_keys: tuple[str, ...] = ()
     years: tuple[int, ...] = ()
     include_archived: bool = False
+    document_patterns: tuple[str, ...] = ()
+    """Motifs SQL LIKE sur document_id (« %code-general-des-impots% ») quand la question nomme
+    un texte : la recherche par numéro d'article se limite alors à ces documents."""
 
 
 @dataclass(frozen=True, slots=True)

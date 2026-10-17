@@ -42,12 +42,21 @@ class InMemoryRetriever:
         for passage in self._passages:
             if passage.status == "archive" and not query.include_archived:
                 continue
-            exact = passage.article is not None and article_key(passage.article) in query.article_keys
+            exact = (
+                passage.article is not None
+                and article_key(passage.article) in query.article_keys
+                and _matches_hint(passage.document_id, query.document_patterns)
+            )
             overlap = len(question_tokens & set(tokenize(passage.content))) / max(len(question_tokens), 1)
             if exact or overlap > 0:
                 results.append(dataclasses.replace(passage, relevance=round(overlap, 4), exact_match=exact))
         results.sort(key=lambda passage: (passage.exact_match, passage.relevance or 0.0), reverse=True)
         return results[:limit]
+
+
+def _matches_hint(document_id: str, patterns: Sequence[str]) -> bool:
+    """Équivalent simplifié de `document_id LIKE ANY(patterns)` pour des motifs « %texte% »."""
+    return not patterns or any(pattern.strip("%") in document_id for pattern in patterns)
 
 
 class ScriptedLLM:

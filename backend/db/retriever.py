@@ -20,6 +20,10 @@ APPLICABLE_COUNTRIES: dict[str, tuple[str, ...]] = {
     "BJ": ("BJ", "OHADA", "UEMOA", "CEDEAO"),
 }
 
+# Rang plein texte divisé par la longueur du chunk (normalisation 2) : sans elle, un chunk de
+# 100 000 caractères contient tous les mots et arrive en tête de toutes les questions.
+FTS_RANK = "ts_rank_cd(c.content_tsv, fq.q, 2)"
+
 _FILTERS = """
     d.domain = %(domain)s
     AND d.country = ANY(%(countries)s)
@@ -47,19 +51,21 @@ fts_query AS (
 ),
 fts AS (
     SELECT c.chunk_id,
-           row_number() OVER (ORDER BY ts_rank_cd(c.content_tsv, fq.q) DESC) AS rnk
+           row_number() OVER (ORDER BY {FTS_RANK} DESC) AS rnk
     FROM chunks c
     JOIN documents d ON d.document_id = c.document_id
     CROSS JOIN fts_query fq
     WHERE fq.q IS NOT NULL AND c.content_tsv @@ fq.q AND {_FILTERS}
-    ORDER BY ts_rank_cd(c.content_tsv, fq.q) DESC
+    ORDER BY {FTS_RANK} DESC
     LIMIT %(k)s
 ),
 exact AS (
     SELECT c.chunk_id
     FROM chunks c
     JOIN documents d ON d.document_id = c.document_id
-    WHERE c.article_key = ANY(%(articles)s) AND {_FILTERS}
+    WHERE c.article_key = ANY(%(articles)s)
+      AND (cardinality(%(document_patterns)s::text[]) = 0 OR c.document_id LIKE ANY(%(document_patterns)s))
+      AND {_FILTERS}
     ORDER BY d.source_level, c.ordinal
     LIMIT %(k)s
 ),
@@ -100,6 +106,7 @@ class PgHybridRetriever:
             "model": self._embedder.model_name,
             "text": query.text,
             "articles": list(query.article_keys),
+            "document_patterns": list(query.document_patterns),
             "domain": filters.domain,
             "countries": list(APPLICABLE_COUNTRIES.get(filters.jurisdiction, (filters.jurisdiction,))),
             "statuses": statuses,

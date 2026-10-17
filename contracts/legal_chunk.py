@@ -27,12 +27,14 @@ _WHITESPACE = re.compile(r"\s+")
 def article_key(article: str | None) -> str | None:
     """Forme normalisée d'un numéro d'article, utilisée pour la recherche exacte.
 
-    « Art. 1085  Ter » et « 1085 ter » donnent « 1085 ter » ; « 12 - 1 » donne « 12-1 ».
+    « Art. 1085  Ter » et « 1085 ter » donnent « 1085 ter » ; « 12 - 1 » donne « 12-1 » ;
+    « 1er » et « premier » donnent « 1 ».
     """
     if article is None:
         return None
     key = _WHITESPACE.sub(" ", article).strip().lower()
     key = re.sub(r"^(article|art\.?)\s*", "", key)
+    key = re.sub(r"^(1\s*er|premier)\b", "1", key)
     key = re.sub(r"\s*-\s*", "-", key)
     return key or None
 

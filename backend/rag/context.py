@@ -19,10 +19,16 @@ _LEVEL_LABELS = {
 }
 
 
-def build_context(passages: Sequence[Passage]) -> tuple[str, dict[str, Passage]]:
-    """Renvoie le texte du contexte et la table « P3 » → passage utilisée par la garde 2."""
+def build_context(
+    passages: Sequence[Passage], max_passage_chars: int | None = None
+) -> tuple[str, dict[str, Passage]]:
+    """Renvoie le texte du contexte et la table « P3 » → passage utilisée par la garde 2.
+
+    `max_passage_chars` borne la part de chaque passage envoyée au LLM (coût, taille du contexte) ;
+    l'extrait affiché à l'utilisateur reste le texte complet du chunk.
+    """
     labelled = {f"P{index}": passage for index, passage in enumerate(passages, start=1)}
-    blocks = [_render(label, passage) for label, passage in labelled.items()]
+    blocks = [_render(label, passage, max_passage_chars) for label, passage in labelled.items()]
     return "\n\n".join(blocks), labelled
 
 
@@ -34,7 +40,7 @@ def build_user_message(question: str, context: str) -> str:
     )
 
 
-def _render(label: str, passage: Passage) -> str:
+def _render(label: str, passage: Passage, max_chars: int | None) -> str:
     nature = [
         detail
         for detail in (
@@ -58,7 +64,10 @@ def _render(label: str, passage: Passage) -> str:
         lines.append(f"Emplacement : {' — '.join(where)}")
     if passage.is_ocr:
         lines.append("Texte issu d'une reconnaissance optique (OCR) : erreurs de lecture possibles.")
-    lines.append(f"Texte :\n{_neutralize(passage.content)}")
+    text = passage.content
+    if max_chars is not None and len(text) > max_chars:
+        text = f"{text[:max_chars]}\n[… passage tronqué : la suite figure dans le document original]"
+    lines.append(f"Texte :\n{_neutralize(text)}")
     body = "\n".join(lines)
     return f'<passage id="{label}">\n{body}\n</passage>'
 

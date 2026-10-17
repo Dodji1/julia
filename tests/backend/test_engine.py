@@ -4,6 +4,7 @@ from backend.rag import messages
 from backend.rag.engine import EngineSettings, RagEngine
 from backend.rag.fake import ScriptedLLM
 from backend.rag.interfaces import LLMUnavailableError
+from backend.rag.llm import ExtractiveLLM
 from backend.rag.models import NoopReranker
 from backend.rag.types import AnswerStatus, SearchFilters
 
@@ -136,6 +137,20 @@ def test_llm_receives_the_question_and_tagged_passages(make_passage, llm_json):
     assert "json" in user
 
 
+def test_long_passages_are_truncated_for_the_llm_only(make_passage, llm_json):
+    long_text = "a" * 9000
+    engine, llm, _ = build(
+        [make_passage(1, content=long_text)], [llm_json("answered", "Règle [P1].")], max_passage_chars=1000
+    )
+
+    result = engine.answer("Question", FILTERS)
+
+    user = llm.calls[0][1]
+    assert "passage tronqué" in user
+    assert "a" * 1001 not in user
+    assert result.sources[0].content == long_text
+
+
 def test_question_analysis_reaches_the_retriever(make_passage, llm_json):
     engine, _, retriever = build([make_passage(1)], [llm_json("answered", "Règle [P1].")])
 
@@ -144,6 +159,17 @@ def test_question_analysis_reaches_the_retriever(make_passage, llm_json):
     query = retriever.queries[0]
     assert query.article_keys == ("224",)
     assert query.include_archived is True
+
+
+def test_extractive_mode_cites_the_best_passages_without_writing(make_passage):
+    passages = [make_passage(index) for index in range(1, 5)]
+    engine = RagEngine(StaticRetriever(passages), NoopReranker(), ExtractiveLLM(), "consignes")
+
+    result = engine.answer("Question", FILTERS)
+
+    assert result.status is AnswerStatus.ANSWERED
+    assert result.answer_markdown.endswith("[1][2][3]")
+    assert result.sources == tuple(passages[:3])
 
 
 def test_search_never_calls_the_llm(make_passage):
