@@ -12,28 +12,25 @@ Plateforme legal tech de recherche juridique sourcée (RAG) sur le droit africai
 | 1 | Analyse et architecture | ✅ |
 | 2 | Structure du projet, configuration, interfaces, manifeste du corpus | ✅ (ce dépôt) |
 | 3 | Landing page Vitalia | ✅ V0 React |
-| 4 | Interface de chat Julia | ✅ V0 mockable |
-| 5 | Backend FastAPI + schéma de base | à venir |
-| 6 | Pipeline d'ingestion (CGI, puis OCR) | à venir |
-| 7-9 | RAG, DeepSeek, citations vérifiées | à venir |
+| 4 | Interface de chat Julia | ✅ branchée sur l'API réelle |
+| 5 | Backend FastAPI + schéma de base | ✅ V0 ([docs/backend.md](docs/backend.md)) |
+| 6 | Pipeline d'ingestion (CGI, puis OCR) | à venir — contrat de sortie : [pipeline/README.md](pipeline/README.md) |
+| 7-9 | RAG, DeepSeek, citations vérifiées | moteur et gardes ✅ ; qualité à régler sur le corpus réel |
 | 10 | Test sur le corpus fiscal réel + jeu d'évaluation | à venir |
 
 ## Démarrage rapide
 
 ```bash
-cp .env.example .env            # puis renseigner DEEPSEEK_API_KEY et POSTGRES_PASSWORD
-docker compose up --build       # PostgreSQL+pgvector (5432) et API (8000)
-curl http://localhost:8000/api/health
+python -m venv .venv && source .venv/bin/activate    # Windows : .venv\Scripts\activate
+pip install -r requirements-dev.txt
+cp .env.example .env                                  # JULIA_ENGINE=fake par défaut : ni base ni LLM
+uvicorn backend.app.main:create_app --factory --reload
+# → http://localhost:8000/api/docs
+python -m pytest -q
 ```
 
-Sans Docker (développement) :
-
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn backend.main:app --reload
-python -m pytest -q             # 16 tests
-```
+Moteur réel : `docker compose up -d db` (PostgreSQL + pgvector sur le port 55432), indexation des chunks,
+puis `JULIA_ENGINE=postgres` et `JULIA_LLM_API_KEY`. Détails dans [docs/backend.md](docs/backend.md).
 
 Frontend :
 
@@ -46,9 +43,9 @@ npm test
 npm run build
 ```
 
-Le contrat attendu par le frontend est documenté dans
-[`docs/api/frontend-contract.yaml`](docs/api/frontend-contract.yaml). En mode `live`, Vite transmet `/api`
-à FastAPI sur `http://localhost:8000`.
+Le contrat de l'API est [`docs/api/openapi.json`](docs/api/openapi.json), généré depuis le backend. En mode
+`live`, Vite transmet `/api` à FastAPI sur `http://127.0.0.1:8000`. La version compilée (`npm run build`)
+peut aussi être servie directement par l'API : `JULIA_FRONTEND_DIST=frontend/dist`.
 
 ## Corpus
 
@@ -81,7 +78,7 @@ Frontend (React + Vite)  →  FastAPI  →  RAG Orchestrator
 PostgreSQL + pgvector  ←  Pipeline d'ingestion (manifeste → extraction/OCR → parseur d'articles → embeddings)
 ```
 
-Interfaces interchangeables (`backend/rag/*/base.py`) :
+Interfaces interchangeables (`backend/rag/interfaces.py`) :
 `LLMProvider` (DeepSeek maintenant, Claude en phase 4), `Embedder` (BGE-M3 local), `Reranker` (noop puis bge-reranker-v2-m3),
 `Retriever`.
 
@@ -89,7 +86,7 @@ Interfaces interchangeables (`backend/rag/*/base.py`) :
 
 - Le LLM ne renvoie que des **identifiants de passages** ; les extraits affichés sont relus en base, jamais générés.
 - Le **refus** est codé dans l'orchestrateur (seuil de pertinence), pas seulement dans le prompt.
-- DeepSeek : le mode *thinking* est actif par défaut côté fournisseur ; il est **désactivé explicitement** (`DEEPSEEK_THINKING`).
+- DeepSeek : le mode *thinking* est actif par défaut côté fournisseur ; il est **désactivé explicitement** (`JULIA_LLM_EXTRA_BODY`).
   Les anciens noms `deepseek-chat` / `deepseek-reasoner` sont retirés : utiliser `deepseek-flash`.
 - Pas de score de confiance affiché à l'utilisateur tant qu'il n'est pas calibré.
 - Passages issus de l'OCR signalés à l'utilisateur (« vérifier sur l'original »).
@@ -98,12 +95,16 @@ Interfaces interchangeables (`backend/rag/*/base.py`) :
 ## Structure
 
 ```
-backend/   api · core (config, enums) · models (schémas) · services · rag/{ingestion,chunking,embeddings,retrieval,reranking,generation,verification}
+backend/   app (FastAPI, routes, schémas = contrat API) · rag (orchestrateur, gardes, LLM, modèles)
+           db (migrations SQL, recherche hybride) · indexing (JSONL LegalChunk → PostgreSQL)
+contracts/ legal_chunk.py — format partagé entre pipeline et backend (#12)
+pipeline/  scripts d'ingestion 01 → 07 (équipe RAG)
 frontend/  React · composants · client API typé · tests    (étapes 3-4)
 data/      raw (non versionné) · processed · metadata/corpus_manifest.yaml
-scripts/   build_manifest.py
-tests/     test_core.py · test_manifest.py · eval/questions_fiscal_bj.yaml (à compléter avec un fiscaliste)
-docker/    Dockerfile.api · initdb/01-extensions.sql
+scripts/   export_openapi.py (régénère docs/api/openapi.json)
+tests/     backend (unitaires, API) · db (intégration PostgreSQL)
+docker/    Dockerfile.api
+docs/      backend.md · api/openapi.json (contrat publié pour le frontend)
 ```
 
 ## Avertissement
