@@ -28,12 +28,15 @@ class RerankerMode(StrEnum):
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="JULIA_", env_file=".env", extra="ignore")
+    # env_ignore_empty : « JULIA_LLM_API_KEY= » vaut « non renseignée », pas une clé vide.
+    model_config = SettingsConfigDict(env_prefix="JULIA_", env_file=".env", extra="ignore", env_ignore_empty=True)
 
     env: Environment = Environment.DEV
     engine: EngineMode = EngineMode.FAKE
     database_url: str | None = None
     data_raw_dir: Path = Path("data/raw")
+    frontend_dist: Path | None = None
+    """Dossier du front compilé (npm run build) : l'API le sert sur la même origine."""
 
     embedding_model: str = "BAAI/bge-m3"
     reranker: RerankerMode = RerankerMode.NONE

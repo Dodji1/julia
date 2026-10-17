@@ -230,6 +230,26 @@ def test_health(api):
     }
 
 
+def test_built_frontend_is_served_on_the_same_origin(api, tmp_path: Path):
+    (tmp_path / "index.html").write_text("<!doctype html><title>Julia</title>", encoding="utf-8")
+    client, _ = api(frontend_dist=tmp_path)
+
+    page = client.get("/")
+    health = client.get("/api/health")
+    unknown_api = client.get("/api/v1/inconnu")
+
+    assert page.status_code == 200 and "<title>Julia</title>" in page.text
+    assert health.json()["status"] == "ok"
+    assert unknown_api.status_code == 404
+    assert unknown_api.json()["error"]["code"] == "NOT_FOUND"
+
+
+def test_empty_environment_values_count_as_missing(monkeypatch):
+    monkeypatch.setenv("JULIA_LLM_API_KEY", "")
+
+    assert Settings(_env_file=None).llm_api_key is None
+
+
 def test_published_contract_is_up_to_date():
     assert OPENAPI_PATH.read_text(encoding="utf-8") == render_openapi(), (
         "docs/api/openapi.json est périmé : lancer python scripts/export_openapi.py"

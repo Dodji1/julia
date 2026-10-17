@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from backend import __version__
 from backend.app.config import Settings
@@ -66,4 +67,7 @@ def create_app(settings: Settings | None = None, services: Services | None = Non
     install_error_handlers(app)
     for router in ROUTERS:
         app.include_router(router)
+    if settings.frontend_dist is not None:
+        # Monté en dernier : les routes /api gardent la priorité.
+        app.mount("/", StaticFiles(directory=settings.frontend_dist, html=True), name="frontend")
     return app
