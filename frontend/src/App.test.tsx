@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import { App } from './App'
+import { ApiRequestError } from './api/client'
 
 describe('Julia frontend', () => {
   it('opens the legal assistant from the landing page', async () => {
@@ -132,6 +133,43 @@ describe('Julia frontend', () => {
       /impossible de joindre le service/i,
     )
     expect(question).toHaveValue('La TVA est-elle applicable ?')
+  })
+
+  it('shows the message written by the API when a request is refused', async () => {
+    const user = userEvent.setup()
+    const askQuestion = vi
+      .fn()
+      .mockRejectedValue(new ApiRequestError('Vous avez posé beaucoup de questions. Réessayez dans 40 s.', 429))
+
+    render(<App askQuestion={askQuestion} initialView="chat" />)
+
+    await user.type(screen.getByRole('textbox', { name: /votre question juridique/i }), 'Encore une question ?')
+    await user.click(screen.getByRole('button', { name: /envoyer/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/réessayez dans 40 s/i)
+  })
+
+  it('sends the user rating once per answer', async () => {
+    const user = userEvent.setup()
+    const sendFeedback = vi.fn().mockResolvedValue(undefined)
+    const askQuestion = vi.fn().mockResolvedValue({
+      requestId: 'req-rated',
+      conversationId: 'conv-rated',
+      status: 'answered',
+      answerMarkdown: 'Réponse sourcée. [1]',
+      sources: [],
+    })
+
+    render(<App askQuestion={askQuestion} sendFeedback={sendFeedback} initialView="chat" />)
+
+    await user.type(screen.getByRole('textbox', { name: /votre question juridique/i }), 'Question à noter')
+    await user.click(screen.getByRole('button', { name: /envoyer/i }))
+    await user.click(await screen.findByRole('button', { name: /réponse utile/i }))
+
+    expect(sendFeedback).toHaveBeenCalledWith({ requestId: 'req-rated', rating: 'up' })
+    expect(screen.getByRole('button', { name: /réponse utile/i })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: /réponse à améliorer/i })).toBeDisabled()
+    expect(screen.getByText(/merci pour votre avis/i)).toBeVisible()
   })
 
   it('copies the complete answer and confirms the action', async () => {

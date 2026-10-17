@@ -26,11 +26,19 @@ import {
 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
-import type { AnswerResponse, AnswerSource, AskQuestion } from '../domain/answer'
+import { ApiRequestError } from '../api/client'
+import type {
+  AnswerResponse,
+  AnswerSource,
+  AskQuestion,
+  FeedbackRating,
+  SendFeedback,
+} from '../domain/answer'
 import { Brand } from './Brand'
 
 interface ChatPageProps {
   askQuestion: AskQuestion
+  sendFeedback?: SendFeedback
   onBack: () => void
 }
 
@@ -46,7 +54,7 @@ const sourceStatus = {
   a_verifier: { label: 'À vérifier', className: 'source-status--review' },
 } as const
 
-export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
+export function ChatPage({ askQuestion, sendFeedback, onBack }: ChatPageProps) {
   const [question, setQuestion] = useState('')
   const [submittedQuestion, setSubmittedQuestion] = useState<string | null>(null)
   const [answer, setAnswer] = useState<AnswerResponse | null>(null)
@@ -55,6 +63,7 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
   const [error, setError] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [feedback, setFeedback] = useState<FeedbackRating | null>(null)
   const questionRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => questionRef.current?.focus(), [])
@@ -76,10 +85,14 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
       })
       setSubmittedQuestion(value)
       setAnswer(response)
+      setFeedback(null)
       setQuestion('')
-    } catch {
+    } catch (caught) {
+      // Les erreurs de l'API (limite atteinte, service indisponible) portent un message lisible.
       setError(
-        'Impossible de joindre le service juridique. Vérifiez votre connexion et réessayez.',
+        caught instanceof ApiRequestError
+          ? caught.message
+          : 'Impossible de joindre le service juridique. Vérifiez votre connexion et réessayez.',
       )
     } finally {
       setIsLoading(false)
@@ -111,6 +124,7 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
     setSelectedSource(null)
     setQuestion('')
     setCopied(false)
+    setFeedback(null)
     setSidebarOpen(false)
     requestAnimationFrame(() => questionRef.current?.focus())
   }
@@ -119,6 +133,17 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
     if (!answer) return
     await navigator.clipboard.writeText(answer.answerMarkdown)
     setCopied(true)
+  }
+
+  async function rateAnswer(rating: FeedbackRating) {
+    if (!answer || feedback) return
+    setFeedback(rating)
+    try {
+      await sendFeedback?.({ requestId: answer.requestId, rating })
+    } catch (caught) {
+      // L'avis est facultatif : son échec ne doit pas gêner la lecture de la réponse.
+      console.warn('Avis non enregistré', caught)
+    }
   }
 
   return (
@@ -242,8 +267,25 @@ export function ChatPage({ askQuestion, onBack }: ChatPageProps) {
                     {copied ? 'Copiée' : 'Copier'}
                   </button>
                   <span />
-                  <button type="button" aria-label="Réponse utile"><ThumbsUp size={15} /></button>
-                  <button type="button" aria-label="Réponse à améliorer"><ThumbsDown size={15} /></button>
+                  {feedback && <small className="feedback-thanks">Merci pour votre avis</small>}
+                  <button
+                    type="button"
+                    aria-label="Réponse utile"
+                    aria-pressed={feedback === 'up'}
+                    disabled={feedback !== null}
+                    onClick={() => void rateAnswer('up')}
+                  >
+                    <ThumbsUp size={15} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Réponse à améliorer"
+                    aria-pressed={feedback === 'down'}
+                    disabled={feedback !== null}
+                    onClick={() => void rateAnswer('down')}
+                  >
+                    <ThumbsDown size={15} />
+                  </button>
                 </div>
               </article>
             )}

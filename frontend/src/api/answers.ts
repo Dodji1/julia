@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import type { AnswerResponse, AskQuestion } from '../domain/answer'
+import { type Fetcher, getClientId, toApiError } from './client'
 
 const sourceSchema = z.object({
   citation_id: z.string(),
@@ -23,21 +24,16 @@ const answerSchema = z.object({
   sources: z.array(sourceSchema),
 })
 
-type Fetcher = (
-  input: RequestInfo | URL,
-  init?: RequestInit,
-) => Promise<Response>
-
 export function createAnswerClient(fetcher: Fetcher = fetch): AskQuestion {
   return async (input) => {
     const response = await fetcher('/api/v1/answers', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Client-Id': getClientId() },
       body: JSON.stringify(input),
     })
 
     if (!response.ok) {
-      throw new Error(`La requête a échoué (${response.status}).`)
+      throw await toApiError(response)
     }
 
     const payload = answerSchema.parse(await response.json())

@@ -52,5 +52,28 @@ describe('answer API client', () => {
       isOcr: false,
       status: 'en_vigueur',
     })
+    expect(fetcher.mock.calls[0][1].headers['X-Client-Id']).toMatch(/^[A-Za-z0-9-]{8,64}$/)
+  })
+
+  it('rejects with the message written by the API', async () => {
+    const fetcher = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          error: {
+            code: 'LLM_UNAVAILABLE',
+            message: 'Le service de génération est momentanément indisponible.',
+            request_id: 'req-2',
+          },
+        }),
+        { status: 503 },
+      ),
+    )
+
+    await expect(
+      createAnswerClient(fetcher)({
+        question: 'Quel est le texte applicable ?',
+        filters: { domain: 'fiscal', jurisdiction: 'BJ' },
+      }),
+    ).rejects.toMatchObject({ status: 503, message: 'Le service de génération est momentanément indisponible.' })
   })
 })

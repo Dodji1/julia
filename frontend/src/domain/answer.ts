@@ -28,3 +28,10 @@ export interface AskQuestionInput {
 }
 
 export type AskQuestion = (input: AskQuestionInput) => Promise<AnswerResponse>
+
+export type FeedbackRating = 'up' | 'down'
+
+export type SendFeedback = (input: {
+  requestId: string
+  rating: FeedbackRating
+}) => Promise<void>

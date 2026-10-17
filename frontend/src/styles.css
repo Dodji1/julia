@@ -312,6 +312,10 @@ a { color: inherit; }
 .answer-actions button { min-height: 31px; display: flex; align-items: center; gap: 6px; padding: 6px 9px; color: #738095; background: transparent; border: 0; border-radius: 8px; font-size: 10px; }
 .answer-actions button:hover { color: var(--blue); background: #f0f3fa; }
 .answer-actions span { flex: 1; }
+.answer-actions button[aria-pressed='true'] { color: var(--blue); background: #eef2fb; }
+.answer-actions button:disabled { cursor: default; }
+.answer-actions button:disabled:not([aria-pressed='true']) { opacity: .4; }
+.feedback-thanks { color: #738095; font-size: 10px; }
 .assistant-message--loading p { margin: 14px 0 0; color: #78879a; font-size: 11px; }
 .thinking-line { display: flex; gap: 5px; margin-top: 18px; }
 .thinking-line i { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: pulse 1.1s infinite alternate; }
